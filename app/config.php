@@ -25,7 +25,7 @@ return array(
 			'action' => 'index'
 		),
 		'/' => array(
-		    'url' => '/news/',
+		    'url' => '/news/all/',
 		    'controller' => 'generic_redirect',
 		    'action' => 'redirect'
 		),
@@ -376,7 +376,7 @@ return array(
 	),
 	'captcha' => array(
 		'alphabet'         => '0123456789abcdefghijklmnopqrstuvwxyz',
-		'allowed_symbols'  => '23456789abcdeghkmnpqsuvxyz',
+		'allowed_symbols'  => '11',
 		'fontsdir'         => 'fonts',
 		'width'            => 160,
 		'height'           => 50,

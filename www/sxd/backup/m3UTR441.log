@@ -1,0 +1,5 @@
+2022.11.21 11:55:08	1	Start import DB `1chan`
+2022.11.21 11:55:08	1	File: 1chan_2022–11–11_12–40–07.sql
+2022.11.21 11:55:08	1	Set connection encoding: `utf8mb4_general_ci`
+2022.11.21 11:55:08	1	Import table `1chan_category`
+2022.11.21 11:55:08	1	Import table `1chan_comment`
