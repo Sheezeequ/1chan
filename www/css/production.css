@@ -245,7 +245,10 @@ html[xmlns] .g-clearfix {
 	.l-footer-wrap.m-mascot-news {
 		background: url(http://1chna.ru/img/mascot_end.jpg) top center no-repeat;
 	}
-	
+
+	.l-footer-wrap.m-mascot-alone {
+		background: url(http://1chna.ru/img/mascot_keany_end.png) top center no-repeat;	
+	}
 	.l-footer-wrap.m-mascot-wi {
 		background: url(http://1chna.ru/img/mascot_end.jpg) top center no-repeat;
 	}
@@ -413,7 +416,12 @@ html[xmlns] .g-clearfix {
 	.b-header-block.m-mascot-news {
 		background: url(http://1chna.ru/img/mascot.jpg) bottom center no-repeat;
 	}
-
+	.b-header-block.m-mascot-alone {
+		background: url(http://1chna.ru/img/mascot_keany.png) top center no-repeat; padding: 13.5px 0; margin-top: 1.5px;
+	}
+	.b-header-block.m-mascot-operate {
+		background: url(http://1chna.ru/img/mascot_ougi.png) top center no-repeat;
+	}
 	.b-header-block.m-mascot-wi {
 		background: url(http://1chna.ru/img/mascot.jpg) bottom center no-repeat;
 	}

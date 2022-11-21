@@ -7,7 +7,7 @@ class TexyHelper
 	/**
 	 * Регулярные выражения для видео:
 	 */
-	const YOUTUBE_REGEXP = 'http:\/\/(?:www\.|)youtube\.com\/watch\?v=([a-zA-Z0-9_\-]+)';
+	const YOUTUBE_REGEXP = '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i';
 
 	/**
 	 * Метод создания объекта Texy:
@@ -60,13 +60,13 @@ class TexyHelper
 			'/:okay:/',
 			'TexyHelper_okay'
 		);
-/*
+
 		$texy->registerLinePattern(
 			array('TexyHelper', 'omsk'),
 			'/:omsk:/',
 			'TexyHelper_omsk'
 		);
-*/
+
 		$texy->registerLinePattern(
 			array('TexyHelper', 'awesome'),
 			'/:awesome:/',
@@ -80,37 +80,135 @@ class TexyHelper
 		);
 		
 		$texy->registerLinePattern(
+			array('TexyHelper', 'popka'),
+			'/:popka:/',
+			'TexyHelper_popka'
+		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'popka2'),
+			'/:popka2:/',
+			'TexyHelper_popka2'
+		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'weed'),
+			'/:weed:/',
+			'TexyHelper_weed'
+		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'makak'),
+			'/:makak:/',
+			'TexyHelper_makak'
+		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'doge'),
+			'/:doge:/',
+			'TexyHelper_doge'
+		);
+		
+		$texy->registerLinePattern(
+			array('TexyHelper', 'sheez'),
+			'/:sheez:/',
+			'TexyHelper_sheez'
+		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'cheez'),
+			'/:cheez:/',
+			'TexyHelper_cheez'
+		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'spice'),
+			'/:spice:/',
+			'TexyHelper_spice'
+		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'hero'),
+			'/:hero:/',
+			'TexyHelper_hero'
+		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'pauk'),
+			'/:pauk:/',
+			'TexyHelper_pauk'
+		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'slon'),
+			'/:slon:/',
+			'TexyHelper_slon'
+		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'yajka'),
+			'/:yajka:/',
+			'TexyHelper_yajka'
+		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'deb'),
+			'/:deb:/',
+			'TexyHelper_deb'
+		);
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'oru'),
+			'/:oru:/',
+			'TexyHelper_oru'
+		);
+		
+		$texy->registerLinePattern(
+			array('TexyHelper', 'cuni'),
+			'/:cuni:/',
+			'TexyHelper_cuni'
+		);
+
+
+
+		$texy->registerLinePattern(
 			array('TexyHelper', 'spoiler'),
 			'/%%(([^%]|%[^%])+)%%/',
 			'TexyHelper_spoiler'
 		);
-/*
+
+		$texy->registerLinePattern(
+			array('TexyHelper', 'speaker'),
+			'/\#\%(([^\$]|\$[^\$])+)\%\#/',
+			'TexyHelper_speaker'
+		);
+		
 		$texy->registerLinePattern(
 			array('TexyHelper', 'redline'),
-			'/\$\$(([^\$]|\$[^\$])+)\$\$/',
+			'/\#\@(([^\$]|\$[^\$])+)\@\#/',
 			'TexyHelper_redline'
-		);
-*/
+		);	
+
 		if ($board == null)
 		{
 			$texy->registerLinePattern(
-				array('TexyHelper', 'rghost'),
-				'/\[:(\d+):\]/',
-				'TexyHelper_rghost'
+				array('TexyHelper', 'imgur'),
+				'/\[:([a-zA-Z0-9]+):\]/',
+				'TexyHelper_imgur'
 			);
 /*
 			$texy->registerLinePattern(
 				array('TexyHelper', 'youtube'),
 				'/\[youtube:([^\]]+)\]/',
-				'TexyHelper__youtube'
+				'TexyHelper_youtube'
 			);
-*/
+
 			$texy->registerLinePattern(
 				array('TexyHelper', 'images'),
 				'/\[([^\]]+)\]/',
-				'TexyHelper__images'
+				'TexyHelper_images'
 			);
-
+*/
 
 	        if ($post_link)
 	        {
@@ -174,7 +272,7 @@ class TexyHelper
 
     /**
 	 * Вставка картинок:
-	 */
+	 
 	static function images($parser, $matches, $name) {
 		list(, $mContent) = $matches;
 
@@ -206,9 +304,9 @@ class TexyHelper
 	}
 
 	/**
-	 * Рыгхост:
+	 * Imgur imagehost:
 	 */
-	static function rghost($parser, $matches, $name) {
+	static function imgur($parser, $matches, $name) {
 		list(, $mContent, $mMod) = $matches;
 
         if ($GLOBALS['post_image_count']++) {
@@ -217,13 +315,13 @@ class TexyHelper
         }
 
 		$img = TexyHtml::el('img');
-		$img -> attrs['src']    = 'http://rghost.ru/'.$mContent.'/thumb.png';
+		$img -> attrs['src']    = 'https://i.imgur.com/'.$mContent.'.jpg';
 		$img -> attrs['alt']    = '';
 
 		$link = TexyHtml::el('a');
 		$link -> attrs['target'] = '_blank';
 		$link -> attrs['class'] = 'b-image-link';
-		$link -> href('http://rghost.ru/'.$mContent.'/image.png');
+		$link -> href('https://imgur.com/'.$mContent.'');
 		$link -> add($img);
 
 		$parser -> again = false;
@@ -247,24 +345,33 @@ class TexyHelper
 
 	/**
 	 * Красный:
-	 */
+	*/
 	static function redline($parser, $matches, $name) {
 		list(, $mContent, $mMod) = $matches;
-
 		$spl = TexyHtml::el('span');
-		$spl -> attrs['style'] = 'color:red';
+		$spl -> attrs['style'] = 'color:#f44336';
 		$spl -> setText($mContent);
-
 		$parser -> again = true;
 		return $spl;
 	}
+
+	/**
+	* Говорилка:
+	*/
+    	static function speaker($parser, $matches, $name) {
+        list(, $mContent, $mMod) = $matches;
+        $spl = TexyHtml::el('audio controls');
+        $spl -> attrs['src'] = 'https://tts.voicetech.yandex.net/tts?text='.$mContent.'&lang=ru_RU&format=mp3&quality=hi&platform=web&application=translate&chunked=0&mock-ranges=1';
+        $parser -> again = true;
+        return $spl;
+    }
 
 	/**
 	 * Троллфейс:
 	 */
 	static function trollface($parser, $matches, $name) {
 		$el = TexyHtml::el('img');
-		$el -> attrs['src']    = 'http://1chna.ru/img/trollface.gif';
+		$el -> attrs['src']    = '/img/trollface.gif';
 		$el -> attrs['width']  = '30';
 		$el -> attrs['height'] = '25';
 		$el -> attrs['alt']    = '';
@@ -279,7 +386,7 @@ class TexyHelper
 	 */
 	static function ffuu($parser, $matches, $name) {
 		$el = TexyHtml::el('img');
-		$el -> attrs['src']    = 'http://1chna.ru/img/ffuu.png';
+		$el -> attrs['src']    = '/img/ffuu.png';
 		$el -> attrs['width']  = '43';
 		$el -> attrs['height'] = '31';
 		$el -> attrs['alt']    = '';
@@ -294,9 +401,24 @@ class TexyHelper
 	 */
 	static function okay($parser, $matches, $name) {
 		$el = TexyHtml::el('img');
-		$el -> attrs['src']    = 'http://1chna.ru/img/okay.png';
+		$el -> attrs['src']    = '/img/okay.png';
 		$el -> attrs['width']  = '26';
 		$el -> attrs['height'] = '32';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * omsk smile
+	 */
+	static function omsk($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/omsk.png';
+		$el -> attrs['width']  = '17';
+		$el -> attrs['height'] = '19';
 		$el -> attrs['alt']    = '';
 
 		$parser -> again = false;
@@ -310,7 +432,7 @@ class TexyHelper
 	 */
 	static function nyan($parser, $matches, $name) {
 		$el = TexyHtml::el('img');
-		$el -> attrs['src']    = 'http://1chna.ru/img/nyan.gif';
+		$el -> attrs['src']    = '/img/nyan.gif';
 		$el -> attrs['width']  = '53';
 		$el -> attrs['height'] = '21';
 		$el -> attrs['alt']    = '';
@@ -320,13 +442,241 @@ class TexyHelper
 		return $el;
 	}
 
+	/**
+	 * popka smile
+	 */
+	static function popka($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/popka.gif';
+		$el -> attrs['width']  = '45';
+		$el -> attrs['height'] = '35';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * popka2 smile
+	 */
+	static function popka2($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/popka2.gif';
+		$el -> attrs['width']  = '35';
+		$el -> attrs['height'] = '25';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * weed smile
+	 */
+	static function weed($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/weed.gif';
+		$el -> attrs['width']  = '35';
+		$el -> attrs['height'] = '35';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * makak smile
+	 */
+	static function makak($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/makak.gif';
+		$el -> attrs['width']  = '51';
+		$el -> attrs['height'] = '37';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * doge smile
+	 */
+	static function doge($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/doge.png';
+		$el -> attrs['width']  = '33';
+		$el -> attrs['height'] = '38';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * sheez smile
+	 */
+	static function sheez($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/sheez.png';
+		$el -> attrs['width']  = '40';
+		$el -> attrs['height'] = '40';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * cheez smile
+	 */
+	static function cheez($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/cheez.gif';
+		$el -> attrs['width']  = '51';
+		$el -> attrs['height'] = '40';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * spice smile
+	 */
+	static function spice($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/spice.png';
+		$el -> attrs['width']  = '40';
+		$el -> attrs['height'] = '45';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * hero smile
+	 */
+	static function hero($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/hero.png';
+		$el -> attrs['width']  = '40';
+		$el -> attrs['height'] = '45';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * pauk smile
+	 */
+	static function pauk($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/pauk.gif';
+		$el -> attrs['width']  = '37';
+		$el -> attrs['height'] = '35';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * slon smile
+	 */
+	static function slon($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/slon.gif';
+		$el -> attrs['width']  = '33';
+		$el -> attrs['height'] = '45';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * yajka smile
+	 */
+	static function yajka($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/yajka.png';
+		$el -> attrs['width']  = '18';
+		$el -> attrs['height'] = '45';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+	/**
+	 * deb smile
+	 */
+	static function deb($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/deb.png';
+		$el -> attrs['width']  = '32';
+		$el -> attrs['height'] = '32';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+
+	/**
+	 * oru smile
+	 */
+	static function oru($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/oru.png';
+		$el -> attrs['width']  = '43';
+		$el -> attrs['height'] = '39';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+
+	/**
+	 * cuni smile
+	 */
+	static function cuni($parser, $matches, $name) {
+		$el = TexyHtml::el('img');
+		$el -> attrs['src']    = '/img/cuni.jpg';
+		$el -> attrs['width']  = '40';
+		$el -> attrs['height'] = '24';
+		$el -> attrs['alt']    = '';
+
+		$parser -> again = false;
+
+		return $el;
+	}
+
+
 
 	/**
 	 * awesome smile
 	 */
 	static function awesome($parser, $matches, $name) {
 		$el = TexyHtml::el('img');
-		$el -> attrs['src']    = 'http://1chna.ru/img/awesome.png';
+		$el -> attrs['src']    = '/img/awesome.png';
 		$el -> attrs['width']  = '20';
 		$el -> attrs['height'] = '20';
 		$el -> attrs['alt']    = '';
@@ -341,7 +691,7 @@ class TexyHelper
 	 */
 	static function rage($parser, $matches, $name) {
 		$el = TexyHtml::el('img');
-		$el -> attrs['src']    = 'http://1chna.ru/img/rage.png';
+		$el -> attrs['src']    = '/img/rage.png';
 		$el -> attrs['width']  = '28';
 		$el -> attrs['height'] = '30';
 		$el -> attrs['alt']    = '';
@@ -356,7 +706,7 @@ class TexyHelper
 	 */
 	static function sobak($parser, $matches, $name) {
 		$el = TexyHtml::el('img');
-		$el -> attrs['src']    = 'http://1chna.ru/img/sobak.gif';
+		$el -> attrs['src']    = '/img/sobak.gif';
 		$el -> attrs['width']  = '30';
 		$el -> attrs['height'] = '24';
 		$el -> attrs['alt']    = '';
@@ -371,7 +721,7 @@ class TexyHelper
 	 */
 	static function desu($parser, $matches, $name) {
 		$el = TexyHtml::el('img');
-		$el -> attrs['src']    = 'http://1chna.ru/img/desu.gif';
+		$el -> attrs['src']    = '/img/desu.gif';
 		$el -> attrs['width']  = '30';
 		$el -> attrs['height'] = '42';
 		$el -> attrs['alt']    = '';
@@ -386,7 +736,7 @@ class TexyHelper
 	 */
 	static function coolface($parser, $matches, $name) {
 		$el = TexyHtml::el('img');
-		$el -> attrs['src']    = 'http://1chna.ru/img/coolface.gif';
+		$el -> attrs['src']    = '/img/coolface.gif';
 		$el -> attrs['width']  = '30';
 		$el -> attrs['height'] = '25';
 		$el -> attrs['alt']    = '';
@@ -415,7 +765,7 @@ class TexyHelper
 			return '&gt;&gt;'. $id;
 
 		$link = TexyHtml::el('a');
-		$link -> href('http://1chna.ru/news/res/'. $post_id .'/#'. $id );
+		$link -> href($_SERVER["HTTP_X_FORWARDED_PROTO"] .'://'.$_SERVER["HTTP_HOST"] .'/news/res/'. $post_id .'/#'. $id );
 		$link -> attrs['class'] = 'js-cross-link';
 		$link -> attrs['name'] = 'news/'. $id;
 		$link -> setText('&gt;&gt;'. $id);
@@ -438,7 +788,7 @@ class TexyHelper
 		if ($board -> existsPost($id))
 		{
 			$post = $board -> getPost($id);
-			$href = 'http://1chna.ru/'. $board_name .'/res/';
+			$href = $_SERVER["HTTP_X_FORWARDED_PROTO"] .'://'.$_SERVER["HTTP_HOST"] .'/'. $board_name .'/res/';
 
 			if ($post['parent_id'] == null)
 				$href .= $id .'/#top';
@@ -469,7 +819,7 @@ class TexyHelper
 			if ($board -> existsPost($id))
 			{
 				$post = $board -> getPost($id);
-				$href = 'http://1chna.ru/'. $board_name .'/res/';
+				$href = $_SERVER["HTTP_X_FORWARDED_PROTO"] .'://'.$_SERVER["HTTP_HOST"] .'/'. $board_name .'/res/';
 
 				if ($post['parent_id'] == null)
 					$href .= $id .'/#top';
@@ -499,7 +849,7 @@ class TexyHelper
 			'&gt;&gt;news/'. $id;
 
 		$link = TexyHtml::el('a');
-		$link -> href('http://1chna.ru/news/res/'. $post_id .'/#'. $id );
+		$link -> href($_SERVER["HTTP_X_FORWARDED_PROTO"] .'://'.$_SERVER["HTTP_HOST"] .'/news/res/'. $post_id .'/#'. $id );
 		$link -> attrs['class'] = 'js-cross-link';
 		$link -> attrs['name'] = 'news/'. $id;
 		$link -> setText('&gt;&gt;news/'. $id);
@@ -514,7 +864,7 @@ class TexyHelper
 	{
 		if (preg_match('/^'.self::YOUTUBE_REGEXP.'/i', $url))
 		{
-			return preg_replace('/'.self::YOUTUBE_REGEXP.'(.*)/i', '<div class="b-video"><div class="g-hidden"><object width="520" height="400"><param name="wmode" value="opaque"></param><embed src="http://www.youtube.com/v/$1&hl=en" type="application/x-shockwave-flash" wmode="opaque" width="520" height="400"></embed></param></embed></object></div></div>', $url);
+			return preg_replace('/'.self::YOUTUBE_REGEXP.'(.*)/i', '<div class="b-video"><div class="g-hidden"><object width="520" height="400"><param name="wmode" value="opaque"></param><embed src="https://www.youtube.com/v/$1&hl=en" type="application/x-shockwave-flash" wmode="opaque" width="520" height="400"></embed></param></embed></object></div></div>', $url);
 		}
 
 		return false;
