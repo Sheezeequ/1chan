@@ -1,0 +1,8 @@
+<?php
+$total_users_today = 1;
+$users_lasthour = 1;
+$guests_today = 0;
+$logged_visible_today = 1;
+$logged_hidden_today = 0;
+$users_today_list = '<a href=\"profile.php?mode=viewprofile&amp;u=2&amp;sid=dc4b2de8611038f7bce07abff098424a\" style=\"font-weight:bold;color:lime\">Hidden</a>  ';
+?>
