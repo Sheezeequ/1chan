@@ -8,18 +8,18 @@
 						</div>
 					</div>
 					<div class="b-board-header_options">
-						 <?php if (!$ENG): ?><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/help/board/">Правила разделов</a><?php endif; ?>
+						 <?php if (!$ENG): ?><a href="/help/board/">Правила разделов</a><?php endif; ?>
 					</div>
 				</div>
 
 				<div class="b-board-form">
 					<div id="board_captcha" style="display:none;font-size:1.2em;text-align:center;" title="<?php if (!$ENG): ?>Обратный тест Тьюринга<?php else: ?>Please enter Captcha code<?php endif; ?>">
-						<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/captcha/?key=board&<?php echo session_name()?>=<?php echo session_id()?>&rand=" /><br />
+						<img src="/captcha/?key=board&<?php echo session_name()?>=<?php echo session_id()?>&rand=" /><br />
 						<input type="text" value="" size="10" />					
 					</div>
 					<div class="b-board-form_b-error" id="board_form_error"><?php echo(implode(', ', array_values($form_errors))); ?></div>
 					<iframe src="about:blank" name="board_form_iframe" style="position:absolute;left:-9999px;visibility:hidden"></iframe>
-					<form action="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<?php echo($this -> getParameter('board_id')); ?>/create/" method="post" id="board_form" enctype="multipart/form-data">
+					<form action="/<?php echo($this -> getParameter('board_id')); ?>/create/" method="post" id="board_form" enctype="multipart/form-data">
 					<input type="hidden" name="captcha" value="" />
 					<input type="hidden" name="homeboard" value="anonymous" />
 						<div class="g-clearfix">
@@ -44,12 +44,12 @@
 							<div class="b-board-form_submit">
 							    <?php if (!$ENG): ?>
 								<span class="b-homeboard-form" style="font-size: 0.6em">
-									<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/homeboards/anonymous.png" class="b-homeboard-form_icon js-homeboard-icon" /> 
+									<img src="/ico/homeboards/anonymous.png" class="b-homeboard-form_icon js-homeboard-icon" /> 
 									<a href="javascript://" class="b-homeboard-form_link js-homeboard-link g-dynamic">Сменить</a>
 									<div class="b-homeboard-form_select js-homeboard-select g-hidden">
 									<?php foreach(HomeBoardHelper::getBoards() as $board => $data): ?>
 										<a href="javascript://" name="<?php echo($board); ?>" title="<?php echo($data[1]); ?>" class="js-homeboard-select-link">
-											<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/homeboards/<?php echo($data[0]); ?>" class="b-homeboard-form_icon" />
+											<img src="/ico/homeboards/<?php echo($data[0]); ?>" class="b-homeboard-form_icon" />
 										</a>
 									<?php endforeach; ?>
 
@@ -81,38 +81,38 @@
 
                      <?php if (!$ENG): ?>
 					<div class="b-board-post-added-notify" id="post_notify">
-						Доступны новые записи, <a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<?php echo($this -> getParameter('board_id')); ?>/">перезагрузите страницу</a>, чтобы увидеть их.
+						Доступны новые записи, <a href="/<?php echo($this -> getParameter('board_id')); ?>/">перезагрузите страницу</a>, чтобы увидеть их.
 					</div>
 					<?php else: ?>
 					<div class="b-board-post-added-notify" id="post_notify">
-						There are few new posts available, <a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<?php echo($this -> getParameter('board_id')); ?>/">reload this page</a> to see them.
+						There are few new posts available, <a href="/<?php echo($this -> getParameter('board_id')); ?>/">reload this page</a> to see them.
 					</div>
 					<?php endif; ?>
 
 					<textarea id="template_comment" style="display:none">
 						<div class="b-comment m-new" id="comment_<%=board_id%>_<%=id%>">
 							<div class="b-comment_b-info">
-								<%=created_at%>, <span class="js-comment-id"><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<?php echo($this -> getParameter('board_id')); ?>/res/<%=parent_id%>/#<%=id%>" class="js-paste-link" name="<%=id%>">№<%=id%></a></span>
+								<%=created_at%>, <span class="js-comment-id"><a href="/<?php echo($this -> getParameter('board_id')); ?>/res/<%=parent_id%>/#<%=id%>" class="js-paste-link" name="<%=id%>">№<%=id%></a></span>
 								<a href="#" class="js-remove-button g-hidden">
-									<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/remove.gif" width="16" height="16" alt="<%=id%>" />
+									<img src="/ico/remove.gif" width="16" height="16" alt="<%=id%>" />
 								</a>
 								<?php if (!$ENG): ?>
 								<% if (author[0] != "anonymous") { %>
-								<a href="http://<%=author[0]%>/" class="b-comment_b-homeboard" title="Аноним выбрал принадлежность «<%=author[1][1]%>»">
-									<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/homeboards/<%=author[1][0]%>" width="16" height="16" alt="" />
+								<a href="https://<%=author[0]%>/" class="b-comment_b-homeboard" title="Аноним выбрал принадлежность «<%=author[1][1]%>»">
+									<img src="/ico/homeboards/<%=author[1][0]%>" width="16" height="16" alt="" />
 								</a>
 								<% } %>
 						        <?php else: ?>
 							    <a href="javascript://" class="b-comment_b-homeboard" title="<%=country%>">
-								    <img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/flags/<%=country%>.png" width="18" height="12" alt="" />
+								    <img src="/ico/flags/<%=country%>.png" width="18" height="12" alt="" />
 							    </a>
 							    <?php endif; ?>
 							</div>
 							<div class="b-comment_b-body g-clearfix">
 								<p>
 								<% if (upload) { %>
-								<a class="b-image-link" target="_blank" href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<%=upload['web_full']%>" title="<%=upload['full_size'][0]%>x<%=upload['full_size'][1]%>, <%=upload['size']%>">
-									<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<%=upload['web_thumb']%>" width="<%=upload['thumb_size'][0]%>" height="<%=upload['thumb_size'][1]%>" alt="" />
+								<a class="b-image-link" target="_blank" href="/<%=upload['web_full']%>" title="<%=upload['full_size'][0]%>x<%=upload['full_size'][1]%>, <%=upload['size']%>">
+									<img src="/<%=upload['web_thumb']%>" width="<%=upload['thumb_size'][0]%>" height="<%=upload['thumb_size'][1]%>" alt="" />
 								</a>
 								<% } %>
 								<%=text%>
@@ -122,12 +122,12 @@
 					</textarea>
 
 					<div id="board_comment_captcha" style="display:none;font-size:1.2em;text-align:center;" title="<?php if (!$ENG): ?>Обратный тест Тьюринга<?php else: ?>Please enter Captcha code<?php endif; ?>">
-						<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/captcha/?key=board_comment&<?php echo session_name()?>=<?php echo session_id()?>&rand=" /><br />
+						<img src="/captcha/?key=board_comment&<?php echo session_name()?>=<?php echo session_id()?>&rand=" /><br />
 						<input type="text" value="" size="10" />					
 					</div>
 
 					<textarea id="template_form_comment" style="display:none">
-						<form action="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<?php echo($this -> getParameter('board_id')); ?>/createPost/" method="post" id="comment_form" enctype="multipart/form-data">
+						<form action="/<?php echo($this -> getParameter('board_id')); ?>/createPost/" method="post" id="comment_form" enctype="multipart/form-data">
 						<input type="text" name="email" value="" class="g-hidden" />
 						<input type="hidden" name="parent_id" value="<%=id%>" />
 						<input type="hidden" name="captcha" value="" />
@@ -147,13 +147,13 @@
 								<input type="submit" value="<?php if (!$ENG): ?>Отправить<?php else: ?>Submit<?php endif; ?>" />
 								<?php if (!$ENG): ?>
 								<span class="b-homeboard-form">
-									<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/homeboards/anonymous.png" class="b-homeboard-form_icon js-homeboard-icon" /> 
+									<img src="/ico/homeboards/anonymous.png" class="b-homeboard-form_icon js-homeboard-icon" /> 
 									<a href="javascript://" class="b-homeboard-form_link js-homeboard-link g-dynamic">Сменить</a>
 									<div class="b-homeboard-form_select js-homeboard-select g-hidden">
 									<?php if (!$ENG): ?>
 									<?php foreach(HomeBoardHelper::getBoards() as $board => $data): ?>
 										<a href="javascript://" name="<?php echo($board); ?>" title="<?php echo($data[1]); ?>" class="js-homeboard-select-link">
-											<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/homeboards/<?php echo($data[0]); ?>" class="b-homeboard-form_icon" />
+											<img src="/ico/homeboards/<?php echo($data[0]); ?>" class="b-homeboard-form_icon" />
 										</a>
 									<?php endforeach; ?>
 									<?php endif; ?>
@@ -170,9 +170,9 @@
 
 					<div class="b-blog-entry" id="post_<?php echo($post['board_id']); ?>_<?php echo($post['id']); ?>">
 						<div class="b-blog-entry_b-header">
-							<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/favicons/1chna.ru.gif" width="16" height="16" alt="" />
+							<img src="/ico/favicons/1chan.pl.png" width="16" height="16" alt="" />
 
-							<a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<?php echo($post['board_id']); ?>/res/<?php echo($post['id']); ?>/">
+							<a href="/<?php echo($post['board_id']); ?>/res/<?php echo($post['id']); ?>/">
 							    <?php if (!$ENG): ?>
 								<?php echo(empty($post['title']) ? 'Тред №'. $post['id'] : $post['title']); ?>
 								<?php else: ?>
@@ -185,8 +185,8 @@
 							<div class="wrap">
 								<p>
 								<?php if($post['upload']): ?>
-								<a class="b-image-link" target="_blank" href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<?php echo($post['upload']['web_full']); ?>" title="<?php echo($post['upload']['full_size'][0]);?>x<?php echo($post['upload']['full_size'][1]);?>, <?php echo($post['upload']['size']); ?>">
-									<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<?php echo($post['upload']['web_thumb']); ?>" width="<?php echo($post['upload']['thumb_size'][0]); ?>" height="<?php echo($post['upload']['thumb_size'][1]); ?>" alt="" />
+								<a class="b-image-link" target="_blank" href="/<?php echo($post['upload']['web_full']); ?>" title="<?php echo($post['upload']['full_size'][0]);?>x<?php echo($post['upload']['full_size'][1]);?>, <?php echo($post['upload']['size']); ?>">
+									<img src="/<?php echo($post['upload']['web_thumb']); ?>" width="<?php echo($post['upload']['thumb_size'][0]); ?>" height="<?php echo($post['upload']['thumb_size'][1]); ?>" alt="" />
 								</a>
 								<?php endif; ?>
 								<?php echo($post['text']); ?>
@@ -197,34 +197,34 @@
 
 						<div class="b-blog-entry_b-info" id="post_<?php echo($post['id']); ?>_info">
 							<span class="b-blog-entry_b-info_b-control">
-								<a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/fav/toggle/<?php echo($post['board_id']); ?>/<?php echo($post['id']); ?>/" class="js-favorite-button"><img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/favorites<?php if(!Board_FavoritesModel::IsFavoritePost($post['board_id'], $post['id'])):?>-false<?php endif; ?>.png" width="16" height="16" alt="" id="post_<?php echo($post['board_id']); ?>_<?php echo($post['id']); ?>_favorite" /></a>
-								<a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<?php echo($post['board_id']); ?>/remove/?id=<?php echo($post['id']); ?>" class="js-delete-button"><img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/delete.gif" width="16" height="16" alt="" id="post_<?php echo($post['board_id']); ?>_<?php echo($post['id']); ?>_favorite" /></a>
+								<a href="/fav/toggle/<?php echo($post['board_id']); ?>/<?php echo($post['id']); ?>/" class="js-favorite-button"><img src="/ico/favorites<?php if(!Board_FavoritesModel::IsFavoritePost($post['board_id'], $post['id'])):?>-false<?php endif; ?>.png" width="16" height="16" alt="" id="post_<?php echo($post['board_id']); ?>_<?php echo($post['id']); ?>_favorite" /></a>
+								<a href="/<?php echo($post['board_id']); ?>/remove/?id=<?php echo($post['id']); ?>" class="js-delete-button"><img src="/ico/delete.gif" width="16" height="16" alt="" id="post_<?php echo($post['board_id']); ?>_<?php echo($post['id']); ?>_favorite" /></a>
 
 								<span>|</span>
 
-								<span><?php echo(TemplateHelper::date((!$ENG) ? 'd M Y @ H:i' : 'Y-m-d @ H:i', $post['created_at'])); ?></span>
+								<span><?php echo(TemplateHelper::date((!$ENG) ? 'd M Y @ H:i:s' : 'Y-m-d @ H:i:s', $post['created_at'])); ?></span>
 								<span>|</span>
 								<span>
-									<a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<?php echo($post['board_id']); ?>/res/<?php echo($post['id']); ?>/"  class="g-disabled js-post-id-link">
+									<a href="/<?php echo($post['board_id']); ?>/res/<?php echo($post['id']); ?>/"  class="g-disabled js-post-id-link">
 										№<?php echo($post['id']); ?></a>
 								</span>
 								<?php if (!$ENG): ?>
 								<?php if($post['author'] && $post['author'] != 'anonymous'): $author = HomeBoardHelper::getBoard($post['author']); ?>
 								<span>|</span>
-								<a href="http://<?php echo($post['author']); ?>/" class="b-comment_b-homeboard" title="Аноним выбрал принадлежность «<?php echo($author[1]); ?>»">
-									<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/homeboards/<?php echo($author[0]); ?>" width="16" height="16" alt="" />
+								<a href="https://<?php echo($post['author']); ?>/" class="b-comment_b-homeboard" title="Аноним выбрал принадлежность «<?php echo($author[1]); ?>»">
+									<img src="/ico/homeboards/<?php echo($author[0]); ?>" width="16" height="16" alt="" />
 								</a>
 								<?php endif; ?>
 						        <?php else: ?>
 							    <span>|</span>
 							    <a href="javascript://" class="b-comment_b-homeboard" title="<?php echo($post['country']); ?>">
-								    <img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/flags/<?php echo($post['country']); ?>.png" width="18" height="12" alt="" />
+								    <img src="/ico/flags/<?php echo($post['country']); ?>.png" width="18" height="12" alt="" />
 							    </a>
 							    <?php endif; ?>
 							</span>
 							<span class="b-blog-entry_b-info_b-link">
 								<a href="javascript://" class="js-update-post-button g-hidden g-dynamic" name="<?php echo($post['id']); ?>"><?php if (!$ENG): ?>Быстрый ответ<?php else: ?>Quick reply<?php endif; ?></a> | 
-								<a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<?php echo($post['board_id']); ?>/res/<?php echo($post['id']); ?>/" class="js-add-comment-button">
+								<a href="/<?php echo($post['board_id']); ?>/res/<?php echo($post['id']); ?>/" class="js-add-comment-button">
 									<?php if (!$ENG): ?>Ответить<?php else: ?>Reply<?php endif; ?> (<span class="js-comments"><?php echo($post['count']); ?></span>)
 								</a>
 							</span>
@@ -248,17 +248,17 @@
 
 						<div class="b-comment" id="comment_<?php echo($tail_post['board_id']); ?>_<?php echo($tail_post['id']); ?>">
 							<div class="b-comment_b-info">
-								<?php echo(TemplateHelper::date((!$ENG) ? 'd M Y @ H:i' : 'Y-m-d @ H:i', $tail_post['created_at'])); ?>, <a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<?php echo($post['board_id']); ?>/res/<?php echo($post['id']); ?>/#<?php echo($tail_post['id']); ?>" name="<?php echo($tail_post['id']); ?>" class="js-paste-link">№<?php echo($tail_post['id']); ?></a>
+								<?php echo(TemplateHelper::date((!$ENG) ? 'd M Y @ H:i:s' : 'Y-m-d @ H:i:s', $tail_post['created_at'])); ?>, <a href="/<?php echo($post['board_id']); ?>/res/<?php echo($post['id']); ?>/#<?php echo($tail_post['id']); ?>" name="<?php echo($tail_post['id']); ?>" class="js-paste-link">№<?php echo($tail_post['id']); ?></a>
 								
 								<?php if (!$ENG): ?>
 								<?php if($tail_post['author'] && $tail_post['author'] != 'anonymous'): $author = HomeBoardHelper::getBoard($tail_post['author']); ?>
-								<a href="http://<?php echo($tail_post['author']); ?>/" class="b-comment_b-homeboard" title="Аноним выбрал принадлежность «<?php echo($author[1]); ?>»">
-									<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/homeboards/<?php echo($author[0]); ?>" width="16" height="16" alt="" />
+								<a href="https://<?php echo($tail_post['author']); ?>/" class="b-comment_b-homeboard" title="Аноним выбрал принадлежность «<?php echo($author[1]); ?>»">
+									<img src="/ico/homeboards/<?php echo($author[0]); ?>" width="16" height="16" alt="" />
 								</a>
 								<?php endif; ?>
 								<?php else: ?>
 								<a href="javascript://" class="b-comment_b-homeboard" title="<?php echo($tail_post['country']); ?>">
-									<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/flags/<?php echo($tail_post['country']); ?>.png" width="18" height="12" alt="" />
+									<img src="/ico/flags/<?php echo($tail_post['country']); ?>.png" width="18" height="12" alt="" />
 								</a>
 								<?php endif; ?>
 							</div>
@@ -266,8 +266,8 @@
 								<div class="wrap">
 									<p>									
 									<?php if($tail_post['upload']): ?>
-									<a class="b-image-link" target="_blank" href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<?php echo($tail_post['upload']['web_full']); ?>" title="<?php echo($tail_post['upload']['full_size'][0]);?>x<?php echo($tail_post['upload']['full_size'][1]);?>, <?php echo($tail_post['upload']['size']); ?>">
-										<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<?php echo($tail_post['upload']['web_thumb']); ?>" width="<?php echo($tail_post['upload']['thumb_size'][0]); ?>" height="<?php echo($tail_post['upload']['thumb_size'][1]); ?>" alt="" />
+									<a class="b-image-link" target="_blank" href="/<?php echo($tail_post['upload']['web_full']); ?>" title="<?php echo($tail_post['upload']['full_size'][0]);?>x<?php echo($tail_post['upload']['full_size'][1]);?>, <?php echo($tail_post['upload']['size']); ?>">
+										<img src="/<?php echo($tail_post['upload']['web_thumb']); ?>" width="<?php echo($tail_post['upload']['thumb_size'][0]); ?>" height="<?php echo($tail_post['upload']['thumb_size'][1]); ?>" alt="" />
 									</a>
 									<?php endif; ?>
 									<?php echo($tail_post['text']); ?>
@@ -283,14 +283,14 @@
 						<div class="b-post-statistics js-postload-link" name="<?php echo($post['id']); ?>" id="board_<?php echo($post['board_id']); ?>_<?php echo($post['id']); ?>_postload" style="display:none;text-align:center;cursor:hand;cursor:pointer">
 							Еще <b class="js-postload-num"></b>, нажмите на это сообщение для загрузки
 							<span class="b-post-statistics_m-right">
-								(<a href="javascript://" class="js-update-post-button" name="<?php echo($post['id']); ?>"><img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/reload.png" width="16" height="16" alt="" /> быстрый ответ</a>)
+								(<a href="javascript://" class="js-update-post-button" name="<?php echo($post['id']); ?>"><img src="/ico/reload.png" width="16" height="16" alt="" /> быстрый ответ</a>)
 							</span>	
 						</div>
 						<?php else: ?>
 						<div class="b-post-statistics js-postload-link" name="<?php echo($post['id']); ?>" id="board_<?php echo($post['board_id']); ?>_<?php echo($post['id']); ?>_postload" style="display:none;text-align:center;cursor:hand;cursor:pointer">
 							New posts avaliable (<b class="js-postload-num"></b>). Click on this message to load them.
 							<span class="b-post-statistics_m-right">
-								(<a href="javascript://" class="js-update-post-button" name="<?php echo($post['id']); ?>"><img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/reload.png" width="16" height="16" alt="" /> quick reply</a>)
+								(<a href="javascript://" class="js-update-post-button" name="<?php echo($post['id']); ?>"><img src="/ico/reload.png" width="16" height="16" alt="" /> quick reply</a>)
 							</span>	
 						</div>
 						<?php endif; ?>

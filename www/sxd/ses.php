@@ -1,11 +1,11 @@
 <?php
 $SES = array (
-  'cfcd8ff248ac3e871d05b71e69b69de2' => 
+  '8c68cbbeec77cf145c7e03ee617bb973' => 
   array (
     'cfg' => 
     array (
       'charsets' => 'cp1251 utf8 latin1',
-      'lang' => 'en',
+      'lang' => 'ru',
       'time_web' => '600',
       'time_cron' => '600',
       'backup_path' => 'backup/',
@@ -14,8 +14,8 @@ $SES = array (
       'globstat' => 0,
       'my_host' => 'localhost',
       'my_port' => 3306,
-      'my_user' => 'marjatta',
-      'my_pass' => 'sexsexsex',
+      'my_user' => 'ssaksa',
+      'my_pass' => 'sraksa1122',
       'my_comp' => 0,
       'my_db' => '',
       'auth' => 'mysql cfg',
@@ -24,8 +24,8 @@ $SES = array (
       'confirm' => '6',
       'exitURL' => './',
     ),
-    'time' => 1669020891,
-    'lng' => 'en',
+    'time' => 1722151206,
+    'lng' => 'ru',
   ),
 );
 ?>

@@ -160,12 +160,6 @@ class Chat_ChatModel
         /**
          * Отправка сообщения администратору:
          */
-        if ($id == '475266264b1e9696e0370039311f83ee4cee8d413c47c')
-        {
-        	JabberBot::send(
-					'-=# '. '>>'. $message_id ."\n". strip_tags($message)
-			);
-        }
 
         self::LogMessage($channel, $message, $message_id, $date);
 

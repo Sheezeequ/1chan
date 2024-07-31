@@ -4,6 +4,7 @@ chdir(dirname(__FILE__));
 /**
  * Проверка статуса доступности серверов:
  */
+require '../instance-config.php';
 require '../app/classes/kvs.class.php';
 
 $cache = KVS::getInstance();
@@ -14,7 +15,7 @@ foreach($links as $section => $section_links)
 	foreach($section_links as $key => $link)
 	{
 		$headers = @get_headers($link['href']);
-		if(!in_array(substr($headers[0], 9, 3), array(200, 303, 302)))
+		if(!in_array(substr($headers[0], 9, 3), array(200, 303, 302, 301)))
 		{
 			$links[$section][$key]['offline'] = 1;
 		} else {
@@ -32,7 +33,7 @@ if ($links) {
 		if (($current = unserialize($cache -> get('Blog_BlogOnlineModel', 'links', $link))) != null)
 		{
 			$headers = @get_headers($current['link']);
-		    if(!in_array(substr($headers[0], 9, 3), array(200, 303, 302)))
+		    if(!in_array(substr($headers[0], 9, 3), array(200, 303, 302, 301)))
 		    {
 		        $cache -> listRemove('Blog_BlogOnlineModel', null, 'links', $link);
 		    }

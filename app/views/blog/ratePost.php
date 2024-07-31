@@ -11,7 +11,7 @@
 								Для продолжения введите символы, изображенные на картинке.
 							</p>
 							<p>
-								<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/captcha/?key=<?php echo($this -> getParameter('captcha_key')); ?>&<?php echo session_name()?>=<?php echo session_id()?>">
+								<img id="captchaimage" src="/captcha/?key=<?php echo($this -> getParameter('captcha_key')); ?>&<?php echo session_name()?>=<?php echo session_id()?>">
 								<input type="text" name="captcha" value=""<?php if($this -> getParameter('captcha_err')):?> class="g-input-error"<?php endif; ?> />
 							</p>
 						</div>

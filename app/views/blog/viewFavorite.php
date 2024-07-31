@@ -3,7 +3,7 @@
 
 				<div class="b-static">
 					<h1>У вас нет избранных постов</h1>
-					<p>Добавить в избранное можно нажав на <img src="http://1chna.ru/ico/favorites-false.png" width="16" height="16" alt="" /> в информации об интересном посте.</p>
+					<p>Добавить в избранное можно нажав на <img src="/ico/favorites-false.png" width="16" height="16" alt="" /> в информации об интересном посте.</p>
 				</div>
 <?php else: ?>
 <?php include(dirname(__FILE__) .'/viewAll.php'); ?>

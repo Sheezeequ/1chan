@@ -4,7 +4,7 @@
  * It also can resize and crop images.
  * Works on PHP 5
  * @author Alaa Al-Hussein
- * @link http://www.freelancer-id.com/projects
+ * @link https://www.freelancer-id.com/projects
  * @version 1.0
  *
  */

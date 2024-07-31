@@ -1,7 +1,7 @@
 				<h2><a href="#">Первый канал</a> &raquo; <a href="#" class="active">Редактировать категорию</a></h2>
 
                 <div id="main">
-						<form action="http://<?php echo TemplateHelper::getSiteUrl(); ?>/admin/postCategoryEdit" method="post" class="jNice">
+						<form action="/admin/postCategoryEdit" method="post" class="jNice">
 						<input type="hidden" name="id" value="<?php echo($cat['id']) ?>" />
 							<h3>Основные поля:</h3>
 							<fieldset>

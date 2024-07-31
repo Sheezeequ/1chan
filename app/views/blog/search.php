@@ -4,7 +4,7 @@
 					<div class="b-blog-form_b-error" id="blog_form_error"><?php echo(implode(', ', array_values($form_errors))); ?></div>
 
 					<div class="b-blog-form_b-form">
-					<form action="http://<?php echo TemplateHelper::getSiteUrl(); ?>/news/search/" method="post">
+					<form action="/news/search/" method="post">
 						<div class="b-blog-form_b-form_b-field">
 							<h2>Поиск постов:</h2>
 							<p>
@@ -50,14 +50,14 @@
 				<?php foreach($posts as $post): ?>
 				<div class="b-blog-entry" id="post_<?php echo($post['id']); ?>">
 					<div class="b-blog-entry_b-header">
-						<img src="<?php echo($post['link'] ? TemplateHelper::getIcon($post['link']) : 'http://'. TemplateHelper::getSiteUrl() .'/ico/favicons/1chna.ru.gif'); ?>" width="16" height="16" alt="" />
+						<img src="<?php echo($post['link'] ? TemplateHelper::getIcon($post['link']) : '/ico/favicons/1chan.pl.png'); ?>" width="16" height="16" alt="" />
 					<?php if($post['category']): ?>
-						<a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/news/cat/<?php echo(TemplateHelper::BlogCategory($post['category'], 'name')); ?>/" class="b-blog-entry_b-header_m-category">
+						<a href="/news/cat/<?php echo(TemplateHelper::BlogCategory($post['category'], 'name')); ?>/" class="b-blog-entry_b-header_m-category">
 							<?php echo(TemplateHelper::BlogCategory($post['category'], 'title')); ?></a>
 						&rarr;
 					<?php endif; ?>
 
-						<a href="<?php echo($post['link'] ? $post['link'] : 'http://'. TemplateHelper::getSiteUrl() .'/news/res/'. $post['id'] .'/'); ?>">
+						<a href="<?php echo($post['link'] ? $post['link'] : '/news/res/'. $post['id'] .'/'); ?>">
 							<?php echo($post['title']); ?>
 
 						</a>
@@ -70,11 +70,11 @@
 					</div>
 					<div class="b-blog-entry_b-info" id="post_<?php echo($post['id']); ?>_info">
 						<span class="b-blog-entry_b-info_b-control">
-							<a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/b/fav/toggle/<?php echo($post['id']); ?>/" class="js-favorite-button">
-								<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/favorites<?php if(!Blog_BlogPostsModel::IsFavoritePost($post['id'])):?>-false<?php endif; ?>.png" width="16" height="16" alt="" id="post_<?php echo($post['id']); ?>_favorite" />
+							<a href="/b/fav/toggle/<?php echo($post['id']); ?>/" class="js-favorite-button">
+								<img src="/ico/favorites<?php if(!Blog_BlogPostsModel::IsFavoritePost($post['id'])):?>-false<?php endif; ?>.png" width="16" height="16" alt="" id="post_<?php echo($post['id']); ?>_favorite" />
 							</a>
 							<a href="#" class="js-moderator-button g-hidden">
-								<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/settings.png" width="16" height="16" alt="<?php echo($post['id']); ?>" />
+								<img src="/ico/settings.png" width="16" height="16" alt="<?php echo($post['id']); ?>" />
 							</a>
 							<span>|</span>
 						<?php if($post['rateable']): ?>
@@ -89,21 +89,21 @@
 							<span>|</span>
 						<?php endif; ?>
 
-							<span><?php echo(TemplateHelper::date('d M Y @ H:i', $post['created_at'])); ?></span>
+							<span><?php echo(TemplateHelper::date('d M Y @ H:i:s', $post['created_at'])); ?></span>
 							<span>|</span>
 							<span>
-								<a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/news/res/<?php echo($post['id']); ?>/" class="g-disabled">
+								<a href="/news/res/<?php echo($post['id']); ?>/" class="g-disabled">
 									№<?php echo($post['id']); ?></a>
 							</span>
 							<?php if($post['author'] != 'anonymous'): $author = HomeBoardHelper::getBoard($post['author']); ?>
 							<span>|</span>
-							<a href="http://<?php echo($post['author']); ?>/" class="b-comment_b-homeboard" title="Аноним выбрал принадлежность «<?php echo($author[1]); ?>»">
-								<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/homeboards/<?php echo($author[0]); ?>" width="16" height="16" alt="" />
+							<a href="https://<?php echo($post['author']); ?>/" class="b-comment_b-homeboard" title="Аноним выбрал принадлежность «<?php echo($author[1]); ?>»">
+								<img src="/ico/homeboards/<?php echo($author[0]); ?>" width="16" height="16" alt="" />
 							</a>
 							<?php endif; ?>
 						</span>
 						<span class="b-blog-entry_b-info_b-link">
-							<a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/news/res/<?php echo($post['id']); ?>/">
+							<a href="/news/res/<?php echo($post['id']); ?>/">
 								<?php if ($post['closed']): ?>Обсуждение закрыто<?php else: ?>Обсуждение: <span class="js-comments<?php TemplateHelper::isPostUpdated($post) and print(' g-bold'); ?>"><?php echo($post['comments']); ?></span><?php endif; ?>
 							</a>
 						</span>

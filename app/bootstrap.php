@@ -1,4 +1,5 @@
 <?php
+require '../instance-config.php';
 /**
  * Установка констант путей:
  */
@@ -10,7 +11,7 @@ define('HELPERS_DIR',     APPLICATION_DIR .'/helpers');
 define('MODELS_DIR',      APPLICATION_DIR .'/models');
 define('VIEWS_DIR',       APPLICATION_DIR .'/views');
 define('CONFIG_PATH',     APPLICATION_DIR .'/config.php');
-define('UPLOAD_PATH',    WEB_DIR .'/uploads');
+define('UPLOAD_PATH',     WEB_DIR .'/uploads');
 
 /**
  * Подключение библиотек:
@@ -25,7 +26,6 @@ require_once(LIBS_DIR .'/3rdparty/kcaptcha/kcaptcha.class.php');
 require_once(LIBS_DIR .'/3rdparty/sphinx.class.php');
 require_once(LIBS_DIR .'/3rdparty/texy.class.php');
 require_once(LIBS_DIR .'/3rdparty/realplexor.class.php');
-require_once(LIBS_DIR .'/3rdparty/jabberbot.class.php');
 require_once(LIBS_DIR .'/3rdparty/rss.class.php');
 
 /**

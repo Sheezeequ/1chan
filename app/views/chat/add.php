@@ -1,15 +1,15 @@
 				<div class="b-chat-panel g-clearfix">
 					<ul>
-						<li class="b-chat-panel_b-add-room<?php if ($this -> getParameter('section') == 'add'): ?> b-chat-panel_m-active<?php endif; ?>">
-							<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/add-chat.png" width="16" height="16" alt="" />
+						<li onclick="window.location='/chat/add/'" class="b-chat-panel_b-add-room<?php if ($this -> getParameter('section') == 'add'): ?> b-chat-panel_m-active<?php endif; ?>">
+							<img src="/ico/add-chat.png" width="16" height="16" alt="" />
 							<a href="/chat/add/">Добавить комнату</a>
 						</li>
-						<li class="b-chat-panel_b-all<?php if ($this -> getParameter('section') == 'all'): ?> b-chat-panel_m-active<?php endif; ?>">
-							<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/chat-rooms.png" width="16" height="16" alt="" />
+						<li onclick="window.location='/chat/'" class="b-chat-panel_b-all<?php if ($this -> getParameter('section') == 'all'): ?> b-chat-panel_m-active<?php endif; ?>">
+							<img src="/ico/chat-rooms.png" width="16" height="16" alt="" />
 							<a href="/chat/">Тематические чаты</a>
 						</li>
-						<li class="b-chat-panel_b-common<?php if ($this -> getParameter('section') == 'common'): ?> b-chat-panel_m-active<?php endif; ?>">
-							<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/chat-common.png" width="16" height="16" alt="" />
+						<li onclick="window.location='/chat/common/'" class="b-chat-panel_b-common<?php if ($this -> getParameter('section') == 'common'): ?> b-chat-panel_m-active<?php endif; ?>">
+							<img src="/ico/chat-common.png" width="16" height="16" alt="" />
 							<a href="/chat/common/">Общий чат</a>
 						</li>
 					</ul>
@@ -19,7 +19,7 @@
 					<h1>Добавить комнату:</h1>
 					<div class="b-blog-form_b-error" id="chat_form_error"><?php echo(implode(', ', array_values($form_errors))); ?></div>
 
-					<form action="http://<?php echo TemplateHelper::getSiteUrl(); ?>/chat/add/" method="post" id="chat_form">
+					<form action="/chat/add/" method="post" id="chat_form">
 					<input type="text" name="email" value="" class="g-hidden" />
 
 						<div class="b-blog-form_b-form">
@@ -66,7 +66,7 @@
 									Введите символы, изображенные на картинке.
 								</p>
 								<p>
-									<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/captcha/?key=<?php echo($this -> getParameter('captcha_key')); ?>&<?php echo session_name()?>=<?php echo session_id()?>">
+									<img id="captchaimage" src="/captcha/?key=<?php echo($this -> getParameter('captcha_key')); ?>&<?php echo session_name()?>=<?php echo session_id()?>">
 									<input type="text" name="captcha" value=""<?php if(array_key_exists('captcha', $form_errors)):?> class="g-input-error"<?php endif; ?> />
 								</p>
 

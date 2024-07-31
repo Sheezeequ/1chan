@@ -179,7 +179,7 @@ class Board_BoardModel
 		$kvs -> remove(__CLASS__, $this -> board, 'thread('. $id .')_count');
 		$kvs -> remove(__CLASS__, $this -> board, 'thread('. $id .')_tail');
 		$kvs -> remove(__CLASS__, $this -> board, '0pagecache');
-		$kvs -> hashRemove('Board_Thread', 'Subscribers', $id);
+		$kvs -> hashRemove('Board_Thread', 'Subscribers', null, $id);
 
 		EventModel::getInstance()
 			-> Broadcast('remove_board_thread', array($this -> board, $id));
@@ -675,7 +675,7 @@ EventModel::getInstance()
 		if ($subscribers)
 		{
 			$kvs     = KVS::getInstance();
-			$message = array('board' => $data['board_id'], 'id' => $data['id'], 'title' => $data['title'], 'upload' => $data['upload']['web_thumb'], 'text' => (mb_strlen($data['text'], 'UTF-8') > 250 ? mb_substr($data['text'], 0, 250, 'UTF-8') .'...' : $data['text']), 'link' => 'http://'. TemplateHelper::getSiteUrl().'/'.$data['board_id'] .'/res/'. $data['id'] .'/');
+			$message = array('board' => $data['board_id'], 'id' => $data['id'], 'title' => $data['title'], 'upload' => $data['upload']['web_thumb'], 'text' => (mb_strlen($data['text'], 'UTF-8') > 250 ? mb_substr($data['text'], 0, 250, 'UTF-8') .'...' : $data['text']), 'link' => 'https://'. TemplateHelper::getSiteUrl().'/'.$data['board_id'] .'/res/'. $data['id'] .'/');
 
 			foreach($subscribers as $key)
 			{
@@ -706,7 +706,7 @@ EventModel::getInstance()
 		/**
 		 * Очистка и фильтарция:
 		 */
-		$data['created_at'] = TemplateHelper::date($data['board_id'] != 'int' ? 'd M Y @ H:i' : 'Y-m-d @ H:i', $data['created_at']);
+		$data['created_at'] = TemplateHelper::date($data['board_id'] != 'int' ? 'd M Y @ H:i:s' : 'Y-m-d @ H:i:s', $data['created_at']);
 		$data['author']     = array($data['author'], HomeBoardHelper::getBoard($data['author']));
 		unset($data['ip']);
 
@@ -725,7 +725,7 @@ EventModel::getInstance()
 		if ($subscribers)	
 		{
 			$kvs     = KVS::getInstance();
-			$message = array('board' => $data['board_id'], 'post' => true, 'id' => $data['parent_id'], 'title' => $thread['title'] ? $thread['title'] : '№'. $thread['id'], 'upload' => $data['upload']['web_thumb'], 'text' => (mb_strlen($data['text'], 'UTF-8') > 250 ? mb_substr($data['text'], 0, 250, 'UTF-8') .'...' : $data['text']), 'link' => 'http://'. TemplateHelper::getSiteUrl().'/'.$data['board_id'] .'/res/'. $data['parent_id'] .'/#'. $data['id']);
+			$message = array('board' => $data['board_id'], 'post' => true, 'id' => $data['parent_id'], 'title' => $thread['title'] ? $thread['title'] : '№'. $thread['id'], 'upload' => $data['upload']['web_thumb'], 'text' => (mb_strlen($data['text'], 'UTF-8') > 250 ? mb_substr($data['text'], 0, 250, 'UTF-8') .'...' : $data['text']), 'link' => 'https://'. TemplateHelper::getSiteUrl().'/'.$data['board_id'] .'/res/'. $data['parent_id'] .'/#'. $data['id']);
 			
 			foreach($subscribers as $key)
 			{

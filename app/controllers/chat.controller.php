@@ -65,7 +65,7 @@ class ChatController extends BaseController
 				$id = Chat_ChatRoomsModel::CreateRoom($_POST);
 
 				$template -> headerSeeOther(
-					'http://'. TemplateHelper::getSiteUrl() .'/chat/'. $id .'/'
+					'/chat/'. $id .'/'
 				);
 				return false;
 			}
@@ -121,7 +121,7 @@ class ChatController extends BaseController
 		$template -> setParameter('title', 'Общий чат');
 		$template -> setParameter('section', 'common');
         
-        //Chat_ChatRoomsModel::CreateCommonRoom();
+        Chat_ChatRoomsModel::CreateCommonRoom();
 
         $this['room'] = Chat_ChatRoomsModel::GetRoom(substr(md5('common') . md5('common'), 0, 45));
 
@@ -332,7 +332,7 @@ class ChatController extends BaseController
                                 
 				                if (Chat_ChatRoomsModel::SetAlias($_GET['id'], $alias)) {
 		                                        Chat_ChatRoomsModel::EditRoom($_GET['id'], array('alias' => $alias));
-		                                        Chat_ChatModel::AddInfoMessage($_GET['id'], 'Установлен новый алиас, теперь комната доступна по адресу http://'. TemplateHelper::getSiteUrl() .'/chat/'. $alias .'/');
+		                                        Chat_ChatModel::AddInfoMessage($_GET['id'], 'Установлен новый алиас, теперь комната доступна по адресу https://'. TemplateHelper::getSiteUrl() .'/chat/'. $alias .'/');
                                                 	return array('error' => false, 'id' => -1);
 				                }
                                 return array('error' => true, 'errors' => 'Не удалось установить алиас (возможно он уже занят?).');

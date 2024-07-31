@@ -25,17 +25,17 @@ class Generic_CaptchaController
 		if (!isset($_GET['key']))
 			return false;
 /*
-		if (!preg_match('~^http://1chna\.ru/~i', $_SERVER['HTTP_REFERER']))
+		if (!preg_match('~^https://1chan\.ru/~i', $_SERVER['HTTP_REFERER']))
 		    return false;
 */
 		$session = Session::getInstance();
 
-		if ($session -> instantGet('captcha_'. $_GET['key'], false))
-		{
+//		if ($session -> instantGet('captcha_'. $_GET['key'], false))
+//		{
 			$captcha = new KCAPTCHA();
 			$session -> instantSet('captcha_'. $_GET['key'], $captcha -> getKeyString());
-		}
+//		}
 
-		return false;
+//		return false;
 	}
 }

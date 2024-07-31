@@ -1,7 +1,7 @@
 				<h2><a href="#">Первый канал</a> &raquo; <a href="#" class="active">Добавить комнату чата</a></h2>
 
                 <div id="main">
-						<form action="http://<?php echo TemplateHelper::getSiteUrl(); ?>/admin/chatAdd" method="post" class="jNice">
+						<form action="/admin/chatAdd" method="post" class="jNice">
 							<h3>Основные поля:</h3>
 							<fieldset>
 								<p><label>Заголовок:</label><input name="title" type="text" class="text-long" /></p>

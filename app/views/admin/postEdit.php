@@ -1,7 +1,7 @@
 				<h2><a href="#">Первый канал</a> &raquo; <a href="#" class="active">Редактировать пост</a></h2>
 
                 <div id="main">
-						<form action="http://<?php echo TemplateHelper::getSiteUrl(); ?>/admin/postEdit" method="post" class="jNice">
+						<form action="/admin/postEdit" method="post" class="jNice">
 						<input type="hidden" name="id" value="<?php echo $post['id']; ?>" />
 							<h3>Основные поля:</h3>
 							<fieldset>
@@ -26,6 +26,7 @@
 								<p><label><input type="checkbox" name="closed"<?php if($post['closed']): ?> checked="checked"<?php endif; ?>/> Закрыта</label></p>
 								<p><label><input type="checkbox" name="rateable"<?php if($post['rateable']): ?> checked="checked"<?php endif; ?> /> Оцениваема</label></p>
 								<p><label><input type="checkbox" name="bumpable"<?php if($post['bumpable']): ?> checked="checked"<?php endif; ?> /> Поднимаемая</label></p>
+								<p><label>Рейтинг:</label><input name="rate" type="number" class="text-small" value="<?php echo $post['rate']; ?>" /></p>
 								<p><label>Специальный комментарий:</label><input name="special_comment" type="text" class="text-long" value="<?php echo $post['special_comment']; ?>" /></p>
 							</fieldset>
 							<fieldset>

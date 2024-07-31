@@ -8,8 +8,8 @@ $dbms = 'mysql';
 
 $dbhost = 'localhost';
 $dbname = 'b7_9629569_erosite';
-$dbuser = 'b7_9629569';
-$dbpasswd = 'NOTUSED';
+$dbuser = 'ssaksa';
+$dbpasswd = 'sraksa1122';
 
 $table_prefix = 'phpbb_';
 

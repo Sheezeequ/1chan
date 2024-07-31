@@ -28,6 +28,43 @@ class ModController extends BaseController
 	}
 
 	/**
+	 * Действие просмотра RSS-ленты лога модераторских действий:
+	 */
+	public function getModActionsRssAction(Application $application, Template $template)
+	{
+	 	$modlog = array_reverse(ControlModel::getLogModEvent());
+	 	if ($modlog)
+	 	{
+	 		$rss = new rss('utf-8');
+
+	 		$rss->channel('Первый канал', 'http://'. TemplateHelper::getSiteUrl() .'/', 'Новости имиджборд и не только.');
+	 		$rss->language('ru-ru');
+	 		$rss->copyright('Все права пренадлежат вам © 2010');
+	 		$rss->managingEditor('1kun.ebet.sobak@gmail.com');
+	 		$rss->category('Лог модераторских действий');
+
+	 		$rss->startRSS();
+
+	 		foreach($modlog as $entry)
+	 		{
+	 			$rss->itemDescription($entry);
+	 			$rss->itemAuthor('anonymous');
+	 			$rss->addItem();
+	 		}
+
+	 		$result = $rss->RSSdone();
+	 	}
+
+	 	EventModel::getInstance()
+	 		-> Broadcast('view_rss_modlog');
+
+	 	$template -> headerOk();
+	 	$template -> headerContentType('application/rss+xml', 'UTF-8');
+	 	echo $result;
+	 	return false;
+	}
+
+	/**
 	 * Действие просмотра поста комментария:
 	 */
 	public function getLastCommentsAjaxAction(Application $application)
@@ -44,7 +81,7 @@ class ModController extends BaseController
 		{
 			$post = Blog_BlogPostsModel::GetPost($comment['post_id']);
 			$comment['post_title'] = $post['title'];
-			$comment['created_at'] = TemplateHelper::date('d M Y @ H:i', $comment['created_at']);
+			$comment['created_at'] = TemplateHelper::date('d M Y @ H:i:s', $comment['created_at']);
 			$comment['author']     = array($comment['author'], HomeBoardHelper::getBoard($comment['author']));
 			unset($comment['ip']);
 
@@ -56,7 +93,7 @@ class ModController extends BaseController
 				'post_title'   => $post['title'],
 				'text'         => $post['text'],
 				'author'       => array($post['author'], HomeBoardHelper::getBoard($post['author'])),
-				'created_at'   => TemplateHelper::date('d M Y @ H:i', $post['created_at']),
+				'created_at'   => TemplateHelper::date('d M Y @ H:i:s', $post['created_at']),
 				'post_preview' => true
 			);
 		}
@@ -110,9 +147,8 @@ class ModController extends BaseController
 		    $post['category'] = $category_id;
 			Blog_BlogPostsModel::CatPost($_GET['id'], $post, date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .' изменил категорию поста.');
 			ControlModel::logModEvent(
-				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br /> изменил категорию поста <a href="http://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/" class="js-cross-link">&gt;&gt;'. $post['id'] .'</a>'
+				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br /> изменил категорию поста <a href="https://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/" class="js-cross-link">&gt;&gt;'. $post['id'] .'</a>'
 			);
-			JabberBot::send('-=$ /me (модлог) '. $_SESSION['auth']['name'] .' изменил категорию поста http://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/');
 		}
 
 		return true;
@@ -130,9 +166,8 @@ class ModController extends BaseController
 		if ($post && ControlModel::checkModrights($post['category'])) {
 			Blog_BlogPostsModel::PinPost($_GET['id'], !$post['pinned'], date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] . (!$post['pinned'] ? ' прикрепил' : ' открепил') .' пост.');
 			ControlModel::logModEvent(
-				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br />'. (!$post['pinned'] ? ' прикрепил' : ' открепил') .' пост <a href="http://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/" class="js-cross-link">&gt;&gt;'. $post['id'] .'</a>'
+				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br />'. (!$post['pinned'] ? ' прикрепил' : ' открепил') .' пост <a href="https://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/" class="js-cross-link">&gt;&gt;'. $post['id'] .'</a>'
 			);
-			JabberBot::send('-=$ /me (модлог) '. $_SESSION['auth']['name'] .(!$post['pinned'] ? ' прикрепил' : ' открепил') .' пост http://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/');
 		}
 
 		return true;
@@ -150,9 +185,8 @@ class ModController extends BaseController
 		if ($post && ControlModel::checkModrights($post['category'])) {
 			Blog_BlogPostsModel::RatedPost($_GET['id'], !$post['rated'], date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] . (!$post['rated'] ? ' одобрил' : ' убрал из одобренного') .' пост.');
 			ControlModel::logModEvent(
-				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br />'. (!$post['rated'] ? ' одобрил' : ' убрал из одобренного') .' пост <a href="http://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/" class="js-cross-link">&gt;&gt;'. $post['id'] .'</a>'
+				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br />'. (!$post['rated'] ? ' одобрил' : ' убрал из одобренного') .' пост <a href="https://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/" class="js-cross-link">&gt;&gt;'. $post['id'] .'</a>'
 			);
-			JabberBot::send('-=$ /me (модлог) '. $_SESSION['auth']['name'] . (!$post['rated'] ? ' одобрил' : ' убрал из одобренного') .' пост http://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/');
 		}
 
 		return true;
@@ -170,9 +204,8 @@ class ModController extends BaseController
 		if ($post && ControlModel::checkModrights($post['category'])) {
 			Blog_BlogPostsModel::RateablePost($_GET['id'], !$post['rateable'], date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] . (!$post['rateable'] ? ' сделал оцениваемым' : ' сделал неоцениваемым') .' пост.');
 			ControlModel::logModEvent(
-				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br />'. (!$post['rateable'] ? ' сделал оцениваемым' : ' сделал неоцениваемым') .' пост <a href="http://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/" class="js-cross-link">&gt;&gt;'. $post['id'] .'</a>'
+				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br />'. (!$post['rateable'] ? ' сделал оцениваемым' : ' сделал неоцениваемым') .' пост <a href="https://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/" class="js-cross-link">&gt;&gt;'. $post['id'] .'</a>'
 			);
-			JabberBot::send('-=$ /me (модлог) '. $_SESSION['auth']['name'] . (!$post['rateable'] ? ' сделал оцениваемым' : ' сделал неоцениваемым') .' пост http://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/');
 
 		}
 
@@ -191,9 +224,8 @@ class ModController extends BaseController
 		if ($post && ControlModel::checkModrights($post['category'])) {
 			Blog_BlogPostsModel::ClosePost($_GET['id'], !$post['closed'], date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] . (!$post['closed'] ? ' закрыл' : ' открыл') .' пост.');
 			ControlModel::logModEvent(
-				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br />'. (!$post['closed'] ? ' закрыл' : ' открыл') .' пост <a href="http://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/" class="js-cross-link">&gt;&gt;'. $post['id'] .'</a>'
+				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br />'. (!$post['closed'] ? ' закрыл' : ' открыл') .' пост <a href="https://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/" class="js-cross-link">&gt;&gt;'. $post['id'] .'</a>'
 			);
-			JabberBot::send('-=$ /me (модлог) '. $_SESSION['auth']['name'] . (!$post['closed'] ? ' закрыл' : ' открыл') .' пост http://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/');
 		}
 
 		return true;
@@ -209,7 +241,7 @@ class ModController extends BaseController
 
 		$post = Blog_BlogPostsModel::GetPost($_GET['id']);
 		if ($post && ControlModel::checkModrights($post['category'])) {
-			Blog_BlogPostsModel::HidePost($_GET['id'], !$post['hidden'], 
+			Blog_BlogPostsModel::HidePost($_GET['id'], !$post['hidden'],
 				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] . (!$post['hidden'] ? ' скрыл' : ' показал') .' пост.'.
 				'<br />Причина: '. (!empty($_GET['why']) ? '<em>'. $_GET['why'] .'</em>' : 'не указана'));
 
@@ -219,10 +251,9 @@ class ModController extends BaseController
 			    Blog_BlogPostsModel::SetSpecialComment($_GET['id'], '');
 
 			ControlModel::logModEvent(
-				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br />'. (!$post['hidden'] ? ' скрыл' : ' показал') .' пост <a href="http://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/" class="js-cross-link">&gt;&gt;'. $post['id'] .'</a>'.
+				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br />'. (!$post['hidden'] ? ' скрыл' : ' показал') .' пост <a href="https://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/" class="js-cross-link">&gt;&gt;'. $post['id'] .'</a>'.
 				'<br />Причина: '. (!empty($_GET['why']) ? '<em>'. $_GET['why'] .'</em>' : 'не указана')
 			);
-			JabberBot::send('-=$ /me (модлог) '. $_SESSION['auth']['name'] . (!$post['hidden'] ? ' скрыл' : ' показал') .' пост http://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/' ."\n". 'Причина: '. (!empty($_GET['why']) ? $_GET['why'] : 'не указана'));
 		}
 
 		return true;
@@ -241,10 +272,9 @@ class ModController extends BaseController
 		if ($comment && $post && ControlModel::checkModrights($post['category'])) {
 			Blog_BlogCommentsModel::RemoveComment($_GET['id']);
 			ControlModel::logModEvent(
-				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br /> удалил комментарий '. $comment['id'] .' в посте <a href="http://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/" class="js-cross-link">&gt;&gt;'. $post['id'] .'</a>'.
+				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br /> удалил комментарий '. $comment['id'] .' в посте <a href="https://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/" class="js-cross-link">&gt;&gt;'. $post['id'] .'</a>'.
 				'<br /><em>'.strip_tags($comment['text'],'a').'</em>'
 			);
-			JabberBot::send('-=$ /me (модлог) '. $_SESSION['auth']['name'] . ' удалил комментарий '. $comment['id'] .' в посте http://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/');
 			return true;
 		}
 		return false;
@@ -265,7 +295,6 @@ class ModController extends BaseController
 				date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br /> удалил ссылку '. $link['link'].
 				'<br /><em>'.strip_tags($link['description']).'</em>'
 			);
-			JabberBot::send('-=$ /me (модлог) '. $_SESSION['auth']['name'] . ' удалил ссылку '. $link['link'] .': '. strip_tags($link['description']));
 		}
 
 		return true;
@@ -284,13 +313,13 @@ class ModController extends BaseController
 		$validator -> assertExists('link', '');
 		$validator -> assertRegexp('link', ValidatorHelper::URL_REGEXP, '');
 		$validator -> assertLength('description', 128, '');
-		
+
 		if ($validator -> isValid())
 		{
 			$key     = md5(strtolower($_GET['link']));
 			$ip      = md5($_SERVER['REMOTE_ADDR']);
 			$counter = $kvs -> get(__CLASS__, 'shared_links_ip', $ip);
-			
+
 			if (!$kvs -> exists(__CLASS__, 'shared_links', $key) && !$kvs -> exists(__CLASS__, 'shared_links_ban', $ip))
 			{
 				if ($kvs -> exists(__CLASS__, 'shared_links_ip', $ip))
@@ -313,11 +342,10 @@ class ModController extends BaseController
 					$kvs -> expire(__CLASS__, 'shared_links_ip', $ip, 60);
 				}
 
-				JabberBot::send('-=% /me Отправлена ссылка: '. $_GET['link'] .' ('. $_GET['title'] .')'. "\n". (!empty($_GET['description']) ? 'С описанием: '. $_GET['description'] : ''));
-				
+
 				$kvs -> set(__CLASS__,    'shared_links', $key, true);
 				$kvs -> expire(__CLASS__, 'shared_links', $key, 60 * 60);
-				
+
 				$template -> headerOk();
 				$template -> headerContentTypeWOCharset('image/png');
 				readfile(WEB_DIR .'/ico/tick.png');

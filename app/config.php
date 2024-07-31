@@ -2,10 +2,10 @@
 return array(
 	'database' => array(
 		'engine' => 'mysql',
-		'host'   => '127.0.0.1',
-		'name'   => '1chan',
-		'user'   => 'root',
-		'pass'   => '123'
+		'host'   => SQL_HOST,
+		'name'   => SQL_NAME,
+		'user'   => SQL_USER,
+		'pass'   => SQL_PASSWORD
 	),
 	'routes' => array(
 		'/admin' => array(
@@ -83,7 +83,7 @@ return array(
 			'action'     => 'lastBoardPosts'
 		),
 		'/service/last_board_posts/(\d+)' => array(
-			'page',			
+			'page',
 			'controller' => 'board',
 			'action'     => 'lastBoardPosts'
 		),
@@ -99,6 +99,10 @@ return array(
 			'board', 'id',
 			'controller' => 'board',
 			'action' => 'toggleFavorite'
+		),
+		'/help/markup'  => array(
+			'controller' => 'markup',
+			'action' => 'index'
 		),
 		'/news' => array(
 			'controller' => 'blog',
@@ -237,6 +241,10 @@ return array(
 			'controller' => 'blog',
 			'action' => 'rssAll'
 		),
+		'/news/hidden/rss.xml' => array(
+			'controller' => 'blog',
+			'action' => 'rssHidden'
+		),
 		'/mod/getPost/(\d+)' => array(
 			'id',
 			'controller' => 'mod',
@@ -282,10 +290,6 @@ return array(
 			'controller' => 'mod',
 			'action' => 'removeOnlineLink'
 		),
-		'/wiki' => array(
-			'controller' => 'wiki',
-			'action' => 'index'
-		),
 		'/live'  => array(
 			'controller' => 'live',
 			'action' => 'index'
@@ -327,6 +331,10 @@ return array(
 		'/service/modlog' => array(
 		    'controller' => 'mod',
 		    'action' => 'getModActions'
+		),
+		'/service/modlog/rss.xml' => array(
+				'controller' => 'mod',
+				'action' => 'getModActionsRss'
 		),
 		'/service/share' => array(
 			'controller' => 'mod',
@@ -375,8 +383,10 @@ return array(
 		)
 	),
 	'captcha' => array(
-		'alphabet'         => '0123456789abcdefghijklmnopqrstuvwxyz',
-		'allowed_symbols'  => '11',
+//		'alphabet'         => '0123456789abcdefghijklmnopqrstuvwxyz',
+//		'allowed_symbols'  => '23456789abcdeghkmnpqsuvxyz',
+		'alphabet'         => '0123456789',
+		'allowed_symbols'  => '23456789',
 		'fontsdir'         => 'fonts',
 		'width'            => 160,
 		'height'           => 50,
@@ -386,6 +396,6 @@ return array(
 		'credits'          => '',
 		'foreground_color' => array(mt_rand(0,100), mt_rand(0,100), mt_rand(0,100)),
 		'background_color' => array(255, 255, 255),
-		'jpeg_quality'     => 70
+		'jpeg_quality'     => 0
 	)
 );

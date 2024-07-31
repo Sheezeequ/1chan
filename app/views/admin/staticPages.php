@@ -10,7 +10,7 @@
                     	<?php foreach($pages as $uri => $page): ?>
 							<tr<?php if(++$i % 2): ?> class="odd"<?php endif; ?>>
                                 <td><?php echo $page['title']; ?></td>
-                                <td class="action"><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/<?php echo $uri; ?>/" class="view">View</a><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/admin/staticEdit?page=<?php echo $uri; ?>" class="edit">Edit</a><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/admin/staticDelete?page=<?php echo $uri; ?>" class="delete">Delete</a></td>
+                                <td class="action"><a href="/<?php echo $uri; ?>/" class="view">View</a><a href="/admin/staticEdit?page=<?php echo $uri; ?>" class="edit">Edit</a><a href="/admin/staticDelete?page=<?php echo $uri; ?>" class="delete">Delete</a></td>
                             </tr>
                         <?php endforeach; ?>
                         <?php endif; ?>

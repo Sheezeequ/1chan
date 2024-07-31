@@ -3,7 +3,7 @@
 			function preview() {
 				var form = document.getElementById("static_form"),
 				    old_action = form.action;
-				form.action = "http://<?php echo TemplateHelper::getSiteUrl(); ?>/service/preview/";
+				form.action = "/service/preview/";
 				form.target = "_blank";
 				form.submit();
 				form.action = old_action;
@@ -11,7 +11,7 @@
 			}
 		</script>
                 <div id="main">
-                	<form id="static_form" action="http://<?php echo TemplateHelper::getSiteUrl(); ?>/admin/staticAdd" method="post" class="jsNice">
+                	<form id="static_form" action="/admin/staticAdd" method="post" class="jsNice">
                 		<h3>Основные поля страницы:</h3>
 						<fieldset>
 							<p><label>Путь:</label><input type="text" name="page" class="text-medium" value="" /></p>

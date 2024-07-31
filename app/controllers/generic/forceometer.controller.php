@@ -12,7 +12,7 @@ class Generic_ForceometerController extends BaseController
             $query = $this['query'] = $_GET['query'];
             
             $search = new SphinxClient();
-       	    $search -> SetServer('localhost', 3312);
+       	    $search -> SetServer(SPHINX_HOST, SPHINX_PORT);
 
             $search -> SetGroupBy('created_at', SPH_GROUPBY_MONTH);
 
@@ -57,10 +57,10 @@ class Generic_ForceometerController extends BaseController
                 'uniq_f'  => array()
             );
 
-            for ($y = 2009; $y <= date('Y'); $y++) {
+            for ($y = 2017; $y <= date('Y'); $y++) {
                 for ($m = 1; $m <= 12; $m++) {
                     // Пропуск несуществующих дат и текущего месяца:
-                    if ($y == 2009 && $m < 3) continue;
+                    if ($y == 2017 && $m < 4) continue;
                     if ($y == date('Y') && $m >= date('m')) break;
                     
                     $stamp = $y .'-'. ($m < 10 ? '0'. $m : $m) .'-01';

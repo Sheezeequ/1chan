@@ -1,7 +1,7 @@
 				<h2><a href="#">Первый канал</a> &raquo; <a href="#" class="active">Добавить пост</a></h2>
 
                 <div id="main">
-						<form action="http://<?php echo TemplateHelper::getSiteUrl(); ?>/admin/postAdd" method="post" class="jNice">
+						<form action="/admin/postAdd" method="post" class="jNice">
 							<h3>Основные поля:</h3>
 							<fieldset>
 								<p><label>Категория:</label><select name="category">
@@ -11,7 +11,7 @@
 								<?php endforeach; ?>
 								</select></p>
 								<p><label>Заголовок:</label><input name="title" type="text" class="text-long" /></p>
-								<p><label>Ссылка:</label><input name="link" type="text" class="text-long" value="http://" /></p>
+								<p><label>Ссылка:</label><input name="link" type="text" class="text-long" value="https://" /></p>
 								<p><label>Вводный текст:</label><textarea name="text" rows="5"></textarea></p>
 								<p><label>Общий текст:</label><textarea name="text_full" rows="5"></textarea></p>
 							</fieldset>
@@ -24,9 +24,11 @@
 								<p><label><input type="checkbox" name="closed" /> Закрыта</label></p>
 								<p><label><input type="checkbox" name="rateable" checked="checked" /> Оцениваема</label></p>
 								<p><label><input type="checkbox" name="bumpable" checked="checked" /> Поднимаемая</label></p>
+								<p><label>Рейтинг:</label><input name="rate" type="number" class="text-small" value="0" /></p>
 								<p><label>Специальный комментарий:</label><input name="special_comment" type="text" class="text-long" /></p>
 							</fieldset>
 							<fieldset>
+								<p><label><input type="checkbox" name="html" checked="checked" /> Использовать чистый HTML</label></p>
 								<input type="submit" value="Добавить запись" />
 							</fieldset>
 						</form>

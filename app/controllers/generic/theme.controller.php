@@ -19,7 +19,7 @@ class Generic_ThemeController
 		}
 
 		$template -> headerSeeOther(
-			'http://'. TemplateHelper::getSiteUrl() .'/'
+			'/'
 		);
 		return false;
 	}

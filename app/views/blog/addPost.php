@@ -23,7 +23,7 @@
 						</div>
 					</textarea>
 
-					<form action="http://<?php echo TemplateHelper::getSiteUrl(); ?>/news/add/" method="post" id="blog_form">
+					<form action="/news/add/" method="post" id="blog_form">
 					<input type="text" name="email" value="" class="g-hidden" />
 					<input type="hidden" name="homeboard" value="anonymous" />
 
@@ -32,7 +32,11 @@
 								<h2>Категория:</h2>
 								<p>Для отправки поста в категорию, необходимо выбрать её из выпадающего списка,<br />или ввести приватный ключ категории.</p>
 								<input type="text" name="category" value="<?php echo @$blog_form['category']; ?>"<?php if(array_key_exists('category', $form_errors)):?> class="g-input-error"<?php endif; ?> />
-							    <div><small>Если ты собрался запостить <strong>хуйню</strong>, то оставь это поле пустым.</small></div>
+							    <div>
+									<small>Если ты собрался запостить <strong>хуйню</strong>, то оставь это поле пустым и отметь галку снизу.</small>
+									<br>
+									<label><input type="checkbox" name="hidepost"> Отправить новость в &laquo;Скрытые&raquo;</label>
+							    </div>
                             </div>
 							<div class="b-blog-form_b-form_b-field">
 								<h2>Заголовок:</h2>
@@ -63,14 +67,11 @@
 									Введите символы, изображенные на картинке.
 								</p>
 								<p>
-									<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/captcha/?key=<?php echo($this -> getParameter('captcha_key')); ?>&<?php echo session_name()?>=<?php echo session_id()?>">
+									<img id="captchaimage" src="/captcha/?key=<?php echo($this -> getParameter('captcha_key')); ?>&<?php echo session_name()?>=<?php echo session_id()?>">
 									<input type="text" name="captcha" value=""<?php if(array_key_exists('captcha', $form_errors)):?> class="g-input-error"<?php endif; ?> />
 								</p>
 							<?php endif; ?>
 
-								<p>
-									Будьте добры, соблюдайте <a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/help/news/" target="_blank">простые правила</a> при написании сообщений.
-								</p>
 							</div>
 							<div class="b-blog-form_b-form_b-field g-hidden" id="blog_form_moderation">
 								<h2>Модерирование:</h2>
@@ -87,12 +88,12 @@
 									Иконка выбранной имиджборды будет отображаться рядом с вашим постом.
 								</p>
 								<span class="b-homeboard-form">
-									<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/homeboards/anonymous.png" class="b-homeboard-form_icon js-homeboard-icon" /> 
+									<img src="/ico/homeboards/anonymous.png" class="b-homeboard-form_icon js-homeboard-icon" /> 
 									<a href="javascript://" class="b-homeboard-form_link js-homeboard-link g-dynamic">Сменить</a>
 									<div class="b-homeboard-form_select js-homeboard-select g-hidden">
 									<?php foreach(HomeBoardHelper::getBoards() as $board => $data): ?>
 										<a href="javascript://" name="<?php echo($board); ?>" title="<?php echo($data[1]); ?>" class="js-homeboard-select-link">
-											<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/homeboards/<?php echo($data[0]); ?>" class="b-homeboard-form_icon" />
+											<img src="/ico/homeboards/<?php echo($data[0]); ?>" class="b-homeboard-form_icon" />
 										</a>
 									<?php endforeach; ?>
 
@@ -116,7 +117,7 @@
 								<div id="placeholder_last_posts"></div>
 								<textarea id="template_last_posts" style="display:none">
 							        <div class="b-live-entry">
-								        <a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/news/res/<%=id%>/" class="b-live-entry_b-description"><%=title%></a> <% if (category) { %> &larr; <a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/news/cat/<%=category%>/" class="b-live-entry_b-board"><%=category_title%></a><% } %>
+								        <a href="/news/res/<%=id%>/" class="b-live-entry_b-description"><%=title%></a> <% if (category) { %> &larr; <a href="/news/cat/<%=category%>/" class="b-live-entry_b-board"><%=category_title%></a><% } %>
 							        </div>
 						        </textarea>
 							</div>

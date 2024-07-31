@@ -15,8 +15,25 @@ class Blog_BlogPostsModel
 		$text_original = $params['text'];
 
 		$params['title']     = TexyHelper::typo($params['title']);
-		$params['text']      = TexyHelper::markup($params['text'], !$session -> isAdminSession());
-		$params['text_full'] = TexyHelper::markup($params['text_full'], !$session -> isAdminSession());
+		if ($session->isAdminSession()) {
+			if (isset($params['html'])) {
+				if (!PDOQuery::toTinyint($params['html'])) {
+					$params['text']      = TexyHelper::markup($params['text'], !$session->isAdminSession());
+					$params['text_full'] = TexyHelper::markup($params['text_full'], !$session->isAdminSession());
+				}
+			} else {
+				$params['text']      = TexyHelper::markup($params['text'], !$session->isAdminSession());
+				$params['text_full'] = TexyHelper::markup($params['text_full'], !$session->isAdminSession());
+			}
+		} else {
+			$params['text']      = TexyHelper::markup($params['text'], !$session->isAdminSession());
+			$params['text_full'] = TexyHelper::markup($params['text_full'], !$session->isAdminSession());
+		}
+
+		$tinyints = array('hidden', 'pinned', 'closed', 'rated', 'rateable', 'bumpable');
+		foreach($tinyints as $tinyint) {
+			$params[$tinyint] = isset($params[$tinyint]) ? PDOQuery::toTinyint($params[$tinyint]) : 0;
+		}
 
 		$record = array(
 			'id'         => $id,
@@ -27,7 +44,8 @@ class Blog_BlogPostsModel
 			'link'       => htmlspecialchars($params['link']),
 			'title'      => $params['title'],
 			'text'       => $params['text'],
-			'text_full'  => $params['text_full']
+			'text_full'  => $params['text_full'],
+			'rate'       => isset($params['rate']) ? $params['rate'] : 0
 		);
 
 		if (HomeBoardHelper::existsBoard($params['homeboard']))
@@ -36,12 +54,12 @@ class Blog_BlogPostsModel
 		if (!$safeMode)
 		{
 			$record = array_merge($record, array(
-				'hidden'          => (bool)@$params['hidden'],
-				'pinned'          => (bool)@$params['pinned'],
-				'rated'           => (bool)@$params['rated'],
-				'closed'          => (bool)@$params['closed'],
-				'rateable'        => (bool)@$params['rateable'],
-				'bumpable'        => (bool)@$params['bumpable'],
+				'hidden'          => $params['hidden'],
+				'pinned'          => $params['pinned'],
+				'rated'           => $params['rated'],
+				'closed'          => $params['closed'],
+				'rateable'        => $params['rateable'],
+				'bumpable'        => $params['bumpable'],
 				'special_comment' => @$params['special_comment']
 			));
 		}
@@ -74,7 +92,25 @@ class Blog_BlogPostsModel
 	{
 		$dbh   = PDOQuery::getInstance();
 		$posts = $dbh -> select('1chan_post', '*', 'id = '. $dbh -> q($id), null, 1);
-		return (bool)$posts;
+
+		if ($posts && !empty($posts[0]))
+			return true;
+
+		return false;
+	}
+
+	/**
+	 * Проверка существования поста по содержимому:
+	 */
+	public static function PostWithTextExists($text)
+	{
+		$dbh   = PDOQuery::getInstance();
+		$posts = $dbh -> select('1chan_post', '*', 'text = '. $dbh -> q($text) . ' OR text_full = '. $dbh -> q($text), null, 1);
+
+		if ($posts && !empty($posts[0]))
+			return true;
+
+		return false;
 	}
 
 	/**
@@ -255,29 +291,37 @@ class Blog_BlogPostsModel
 			Blog_BlogCategoryModel::CountCategory($params['category'], true);
 		}
 
-		$params['title']     = TexyHelper::typo($params['title']);
-		$params['text']      = TexyHelper::markup($params['text'], !$session -> isAdminSession());
-		$params['text_full'] = TexyHelper::markup($params['text_full'], !$session -> isAdminSession());
+		$tinyints = array('hidden', 'pinned', 'closed', 'rated', 'rateable', 'bumpable');
+		foreach($tinyints as $tinyint) {
+			$params[$tinyint] = PDOQuery::toTinyint($params[$tinyint]);
+		}
 
 		$record = array(
 			'category'   => $params['category'],
 			'link'       => $params['link'],
 			'title'      => $params['title'],
 			'text'       => $params['text'],
-			'text_full'  => $params['text_full']
+			'text_full'  => $params['text_full'],
 		);
 
+		if ($params['rate'])
+		{
+			$record = array_merge($record, array(
+				'rate' => $params['rate']
+			));
+		}
+		
 		if (!$safeMode)
 		{
 			$record = array_merge($record, array(
 				'ip'              => $params['ip'],
-				'hidden'          => (bool)$params['hidden'],
-				'pinned'          => (bool)$params['pinned'],
-				'rated'           => (bool)$params['rated'],
-				'closed'          => (bool)$params['closed'],
-				'rateable'        => (bool)$params['rateable'],
-				'bumpable'        => (bool)$params['bumpable'],
-				'special_comment' => (bool)$params['special_comment']
+				'hidden'          => $params['hidden'],
+				'pinned'          => $params['pinned'],
+				'closed'          => $params['closed'],
+				'rated'           => $params['rated'],
+				'rateable'        => $params['rateable'],
+				'bumpable'        => $params['bumpable'],
+				'special_comment' => $params['special_comment']
 			));
 		}
 
@@ -353,6 +397,9 @@ class Blog_BlogPostsModel
 		EventModel::getInstance()
 			-> Broadcast('info_post', array($id, $comment));
 
+		// такой же хак, как и прошлый
+		if(!$rated) {$rated = "0";}
+
 		return $dbh -> update('1chan_post', array('rated' => $rated), 'id = '. $dbh -> q($id));
 	}
 
@@ -366,6 +413,8 @@ class Blog_BlogPostsModel
 		EventModel::getInstance()
 			-> Broadcast('info_post', array($id, $comment));
 
+		if(!$rateable) {$rateable = "0";}
+
 		return $dbh -> update('1chan_post', array('rateable' => $rateable), 'id = '. $dbh -> q($id));
 	}
 
@@ -375,6 +424,7 @@ class Blog_BlogPostsModel
 	public static function BumpablePost($id, $bumpable = true)
 	{
 		$dbh = PDOQuery::getInstance();
+		if(!$bumpable) {$bumpable = "0";}
 		return $dbh -> update('1chan_post', array('bumpable' => $bumpable), 'id = '. $dbh -> q($id));
 	}
 
@@ -387,6 +437,8 @@ class Blog_BlogPostsModel
 
 		EventModel::getInstance()
 			-> Broadcast('info_post', array($id, $comment));
+
+		if(!$pinned) {$pinned = "0";}
 
 		return $dbh -> update('1chan_post', array('pinned' => $pinned), 'id = '. $dbh -> q($id));
 	}
@@ -401,6 +453,8 @@ class Blog_BlogPostsModel
 		EventModel::getInstance()
 			-> Broadcast('info_post', array($id, $comment));
 
+		if(!$closed) {$closed = "0";}
+
 		return $dbh -> update('1chan_post', array('closed' => $closed), 'id = '. $dbh -> q($id));
 	}
 
@@ -413,6 +467,8 @@ class Blog_BlogPostsModel
 
 		EventModel::getInstance()
 			-> Broadcast('info_post', array($id, $comment));
+
+		if(!$hidden) {$hidden = "0";}
 
 		return $dbh -> update('1chan_post', array('hidden' => $hidden), 'id = '. $dbh -> q($id));
 	}
@@ -443,7 +499,6 @@ EventModel::getInstance()
 				TemplateHelper::BlogCategory($data['category'], 'title') .' — '. $data['title'] :
 				$data['title'];
 
-		JabberBot::send('-=$ /me «'. $title .'» ( '. 'http://'.TemplateHelper::getSiteUrl().'/news/res/'.$data['id'].'/ )');
 		Blog_BlogStatisticsModel::updateGlobalPosting();
 		EventModel::getInstance()
 			-> ClientBroadcast('posts', 'add_post')
@@ -463,29 +518,4 @@ EventModel::getInstance()
 	-> AddEventListener('info_post', function($data) {
 		EventModel::getInstance()
 			-> ClientBroadcast('post_'. $data[0], 'info_post', array('id' => $data[0], 'comment' => $data[1]));
-	})
-	/**
-	 * Пост оценен (отправка сообщения в джаббер):
-	 */
-	-> AddEventListener('rated_post', function($data) {
-		list($id, $rated) = $data;
-
-		if ($rated) {
-			$post  = Blog_BlogPostsModel::GetPost($id);
-
-			$title = $post['category'] ?
-				TemplateHelper::BlogCategory($post['category'], 'title') .' — '. $post['title'] :
-				$post['title'];
-
-			JabberBot::send(
-				$title ."\n". 'http://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/'
-				."\n". str_repeat('—', 25) ."\n".
-				 preg_replace('/\t/', '', trim(strip_tags($post['text'])))
-				."\n". str_repeat('—', 25)
-			);
-		    //JabberBot::send('-=& /me «'. $title .'» ( '. 'http://'.TemplateHelper::getSiteUrl().'/news/res/'.$post['id'].'/ )');
-
-			EventModel::getInstance()
-				-> ClientBroadcast('posts', 'rated_post');
-		}
 	});

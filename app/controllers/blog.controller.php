@@ -34,7 +34,7 @@ class BlogController extends BaseController
 	    			$session -> persistenceSet('rules_accepted', true);
 
 				$template -> headerSeeOther(
-					'http://'. TemplateHelper::getSiteUrl() .'/news/add/'
+					'/news/add/'
 				);
 			}
 		}
@@ -62,7 +62,7 @@ class BlogController extends BaseController
 
 		$template -> setParameter('total_pages',  ceil($pages - 1));
 		$template -> setParameter('current_page', $page);
-		$template -> setParameter('link_pages', 'http://'. TemplateHelper::getSiteUrl() .'/news/%d/');
+		$template -> setParameter('link_pages', '/news/%d/');
 		$template -> setParameter('sortby',       $sortby);
 
 		EventModel::getInstance()
@@ -89,7 +89,7 @@ class BlogController extends BaseController
 
 		$template -> setParameter('total_pages',  ceil($pages - 1));
 		$template -> setParameter('current_page', $page);
-		$template -> setParameter('link_pages', 'http://'. TemplateHelper::getSiteUrl() .'/news/all/%d/');
+		$template -> setParameter('link_pages', '/news/all/%d/');
 		$template -> setParameter('sortby',       $sortby);
 
 		EventModel::getInstance()
@@ -195,9 +195,9 @@ class BlogController extends BaseController
 
 			$template -> setParameter('total_pages',  ceil($pages - 1));
 			$template -> setParameter('current_page', $page);
-			$template -> setParameter('link_pages', 'http://'. TemplateHelper::getSiteUrl() .'/news/cat/'.$_GET['category'].'/%d/');
+			$template -> setParameter('link_pages', '/news/cat/'.$_GET['category'].'/%d/');
 			$template -> setParameter('category_title', $category['title']);
-			$template -> setParameter('rss_link', 'http://'. TemplateHelper::getSiteUrl() .'/news/cat/'.$_GET['category'].'/rss.xml');
+			$template -> setParameter('rss_link', '/news/cat/'.$_GET['category'].'/rss.xml');
 			$template -> setParameter('sortby',       $sortby);
 		}
 
@@ -220,7 +220,7 @@ class BlogController extends BaseController
 			{
 				$rss = new rss('utf-8');
 
-				$rss->channel('Первый канал', 'http://1chna.ru/', 'Новости имиджборд и не только.');
+				$rss->channel('Первый канал', 'http://'. TemplateHelper::getSiteUrl() .'/', 'Новости имиджборд и не только.');
 				$rss->language('ru-ru');
 				$rss->copyright('Все права пренадлежат вам © 2010');
 				$rss->managingEditor('1kun.ebet.sobak@gmail.com');
@@ -271,7 +271,7 @@ class BlogController extends BaseController
 
 		$template -> setParameter('total_pages',  ceil($pages - 1));
 		$template -> setParameter('current_page', $page);
-		$template -> setParameter('link_pages', 'http://'. TemplateHelper::getSiteUrl() .'/news/hidden/%d/');
+		$template -> setParameter('link_pages', '/news/hidden/%d/');
 		$template -> setParameter('sortby',       $sortby);
 
 		EventModel::getInstance()
@@ -306,7 +306,7 @@ class BlogController extends BaseController
 			if ($validator -> isValid())
 			{
 				$search = new SphinxClient();
-       			$search -> SetServer('localhost', 3312);
+       			$search -> SetServer(SPHINX_HOST, SPHINX_PORT);
 
        			switch($_POST['order'])
        			{
@@ -377,13 +377,13 @@ class BlogController extends BaseController
         foreach($posts as $post) {
             if (TemplateHelper::isPostUpdated($post, false)) {
                 $template -> headerSeeOther(
-						'http://'. TemplateHelper::getSiteUrl() .'/news/res/'. $post['id'] .'/#new'
+						'/news/res/'. $post['id'] .'/#new'
 				);
 			    return false;
             }
         }
 		$template -> headerSeeOther(
-			'http://'. TemplateHelper::getSiteUrl() .'/news/all/'
+			'/news/all/'
 		);
 	    return false;
 	}
@@ -470,7 +470,7 @@ class BlogController extends BaseController
 			    $comment['post_title'] = $post['title'];
 			}
 
-			$comment['created_at'] = TemplateHelper::date('d M Y @ H:i', $comment['created_at']);
+			$comment['created_at'] = TemplateHelper::date('d M Y @ H:i:s', $comment['created_at']);
 			$comment['author']     = array($comment['author'], HomeBoardHelper::getBoard($comment['author']));
 			unset($comment['ip']);
 
@@ -485,7 +485,7 @@ class BlogController extends BaseController
 	 */
 	public function ratePostAction(Application $application, Template $template)
 	{
-		if (parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST) != TemplateHelper::getSiteUrl())
+		if (!isset($_SERVER['HTTP_REFERER']) || (parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST) != TemplateHelper::getSiteUrl()))
 			return false;
 
 		if (ControlModel::isPostRateCaptcha())
@@ -594,10 +594,10 @@ class BlogController extends BaseController
 		if ($session -> isJustCreated())
 			return false;
 
-		if (!$session -> persistenceGet('rules_accepted'))
+		/* if (!$session -> persistenceGet('rules_accepted'))
 			$template -> headerSeeOther(
-				'http://'. TemplateHelper::getSiteUrl() .'/help/news/?confirm'
-			);
+				'/help/news/?confirm'
+			); */
 
 		$this['form_errors'] = array();
 		$this['blog_form']   = array();
@@ -606,6 +606,12 @@ class BlogController extends BaseController
 		{
 			$text_test      = ControlModel::checkContent($_POST['text']);
 			$text_full_test = ControlModel::checkContent($_POST['text_full']);
+
+			$text_flood      = ControlModel::isFloodFilter() ? ControlModel::checkFlood($_POST['text']) : true;
+			$text_full_flood = $_POST['text_full'] && ControlModel::isFloodFilter() ? ControlModel::checkFlood($_POST['text_full']) : true;
+
+			$text_unique      = ControlModel::isSamepostFilter() ? ControlModel::checkPostUnique($_POST['text']) : true;
+			$text_full_unique = $_POST['text_full'] && ControlModel::isSamepostFilter() ? ControlModel::checkPostUnique($_POST['text_full']) : true;
 
 			$validator = new ValidatorHelper($_POST);
 			if (ControlModel::isPostCaptcha())
@@ -618,9 +624,9 @@ class BlogController extends BaseController
 					);
 			}
 
-			$validator -> assertExists('title',           'Не введен заголовок');
+			$validator -> assertExists('title',           'Не введён заголовок');
 			$validator -> assertLength('title',     70,   'Заголовок слишком длинный');
-			$validator -> assertExists('text',            'Не введен вводный текст');
+			$validator -> assertExists('text',            'Не введён вводный текст');
 			$validator -> assertLength('text',      1024, 'Вводный текст слишком длинный');
 
 			if (!$session -> isModeratorSession())
@@ -628,20 +634,49 @@ class BlogController extends BaseController
 
 			$validator -> assertNotExists('email',        'Заполнено лишнее поле');
 
-			if ($validator -> fieldValid('title'))
-				$validator -> assertLengthMore('title', 3, 'Заголовок слишком короткий');
+			if (!isset($_POST['hidepost']) || $_POST['hidepost'] != 'on') {
+				if ($validator -> fieldValid('title'))
+					$validator -> assertLengthMore('title', 3, 'Заголовок слишком короткий');
 
-			if ($validator -> fieldValid('text'))
-				$validator -> assertLengthMore('text', 15, 'Вводный текст слишком короткий');
+				if ($validator -> fieldValid('text'))
+					$validator -> assertLengthMore('text', 15, 'Вводный текст слишком короткий');
 
-			if ($validator -> fieldValid('title'))
-				$validator -> assertTrue('title', mb_substr($_POST['title'], -1, 1, 'UTF-8') != '.', 'Точка в конце заголовка');
+				if ($validator -> fieldValid('title'))
+					// https://stackoverflow.com/questions/16733674/php-remove-symbols-from-string
+					$validator -> assertTrue('title', preg_replace('/[^\p{L}\p{N}\s]/u', '', str_replace(' ', '', $_POST['title'])) != '', 'Заголовок не несёт смысловой нагрузки');
 
+				if ($validator -> fieldValid('title'))
+					$validator -> assertTrue('title', mb_substr($_POST['title'], -1, 1, 'UTF-8') != '.', 'Точка в конце заголовка');
 
-			$validator -> assertTrue(
-				'text', $text_test && $text_full_test,
-				'Запрещенное слово из вордфильтра'
-			);
+				if ($validator -> fieldValid('title') && $validator -> fieldValid('text'))
+					$validator -> assertTrue('title', 
+											($_POST['title'] != $_POST['text']) && (TexyHelper::typo($_POST['title']) != $_POST['text']),
+											'Заголовок совпадает с вводным текстом');
+
+				if ($validator -> fieldValid('text') && $validator -> fieldValid('text_full'))
+					$validator -> assertTrue('text', $_POST['text'] != $_POST['text_full'], 'Вводный текст совпадает с подробным текстом');
+
+				if ($validator -> fieldValid('text_full') && $validator -> fieldValid('title'))
+					$validator -> assertTrue('title', 
+											($_POST['title'] != $_POST['text_full']) && (TexyHelper::typo($_POST['title']) != $_POST['text_full']),
+											'Заголовок совпадает с подробным текстом');
+
+				$validator -> assertTrue(
+					'text', $text_test && $text_full_test,
+					'Запрещённое слово из вордфильтра'
+				);
+
+				$validator -> assertTrue(
+					'text', $text_flood && $text_full_flood,
+					'Обнаружен флуд'
+				);
+
+				$validator -> assertTrue(
+					'text', $text_unique && $text_full_unique,
+					'Новость или комментарий с таким текстом уже существует'
+				);
+			}
+
 
 			$validator -> assertTrue(
 				'timeout', ControlModel::getPostInterval() == 0,
@@ -662,18 +697,22 @@ class BlogController extends BaseController
 				$id = Blog_BlogPostsModel::CreatePost($_POST, true);
 				if (ControlModel::checkModrights(Blog_BlogCategoryModel::GetCategoryIdByCode($_POST['category'])))
 				{
-					if ($_POST['rated'])
+					if (isset($_POST['rated']) && $_POST['rated'])
 						Blog_BlogPostsModel::RatedPost($id, true);
 
-					if ($_POST['pinned'])
+					if (isset($_POST['pinned']) && $_POST['rated'])
 						Blog_BlogPostsModel::PinPost($id, true);
 
-					if ($_POST['notrateable'])
+					if (isset($_POST['notrateable']) && $_POST['rated'])
 						Blog_BlogPostsModel::RateablePost($id, false);
 
-					if ($_POST['closed'])
+					if (isset($_POST['closed']) && $_POST['rated'])
 						Blog_BlogPostsModel::ClosePost($id, true);
 				}
+
+				if (isset($_POST['hidepost']) && $_POST['hidepost'] == 'on')
+					Blog_BlogPostsModel::HidePost($id, true);
+
 
 				if (ControlModel::isPostPremoderation()) {
 					Blog_BlogPostsModel::HidePost($id, true);
@@ -688,7 +727,7 @@ class BlogController extends BaseController
 				$session -> persistenceSet('captcha_mode_length', @$settings['captcha_length']);
 
 				$template -> headerSeeOther(
-					'http://'. TemplateHelper::getSiteUrl() .'/news/res/'. $id .'/'
+					'/news/res/'. $id .'/'
 				);
 				return false;
 			}
@@ -737,14 +776,33 @@ class BlogController extends BaseController
 		if ($validator -> fieldValid('link'))
 			$validator -> assertTrue('link', ControlModel::CheckLinkfilter($_POST['link']) == false, 'Ссылка запрещена');
 
-		if ($validator -> fieldValid('title'))
-			$validator -> assertLengthMore('title', 3, 'Заголовок слишком короткий');
+		if (!isset($_POST['hidepost']) || $_POST['hidepost'] != 'on') {
+			if ($validator -> fieldValid('title'))
+				$validator -> assertLengthMore('title', 3, 'Заголовок слишком короткий');
 
-		if ($validator -> fieldValid('text'))
-			$validator -> assertLengthMore('text', 15, 'Вводный текст слишком короткий');
+			if ($validator -> fieldValid('text'))
+				$validator -> assertLengthMore('text', 15, 'Вводный текст слишком короткий');
 
-		if ($validator -> fieldValid('title'))
-			$validator -> assertTrue('title', mb_substr($_POST['title'], -1, 1, 'UTF-8') != '.', 'Точка в конце заголовка');
+			if ($validator -> fieldValid('title'))
+				// https://stackoverflow.com/questions/16733674/php-remove-symbols-from-string
+				$validator -> assertTrue('title', preg_replace('/[^\p{L}\p{N}\s]/u', '', str_replace(' ', '', $_POST['title'])) != '', 'Заголовок не несёт смысловой нагрузки');
+
+			if ($validator -> fieldValid('title'))
+				$validator -> assertTrue('title', mb_substr($_POST['title'], -1, 1, 'UTF-8') != '.', 'Точка в конце заголовка');
+
+			if ($validator -> fieldValid('title') && $validator -> fieldValid('text'))
+				$validator -> assertTrue('title', 
+										($_POST['title'] != $_POST['text']) && (TexyHelper::typo($_POST['title']) != $_POST['text']),
+										'Заголовок совпадает с вводным текстом');
+
+			if ($validator -> fieldValid('text') && $validator -> fieldValid('text_full'))
+				$validator -> assertTrue('text', $_POST['text'] != $_POST['text_full'], 'Вводный текст совпадает с подробным текстом');
+
+			if ($validator -> fieldValid('text_full') && $validator -> fieldValid('title'))
+				$validator -> assertTrue('title', 
+										($_POST['title'] != $_POST['text_full']) && (TexyHelper::typo($_POST['title']) != $_POST['text_full']),
+										'Заголовок совпадает с подробным текстом');
+		}
 
 		if ($_POST['category'] != '')
 			$validator -> assertTrue('category', Blog_BlogCategoryModel::CategoryExists($_POST['category']), 'Неверный ключ категории');
@@ -764,7 +822,7 @@ class BlogController extends BaseController
 		$preview['title']     = TexyHelper::typo(@$_POST['title']);
 		$preview['text']      = TexyHelper::markup(@$_POST['text'], true);
 		$preview['text_full'] = TexyHelper::markup(@$_POST['text_full'], true);
-		$preview['icon']      = @$_POST['link'] ? TemplateHelper::getIcon(@$_POST['link']) : 'http://'. TemplateHelper::getSiteUrl() .'/ico/favicons/1chna.ru.gif';
+		$preview['icon']      = @$_POST['link'] ? TemplateHelper::getIcon(@$_POST['link']) : '/ico/favicons/1chan.pl.png';
 
 		if (array_key_exists('category', $_POST) && !empty($_POST['category']))
 		{
@@ -800,7 +858,9 @@ class BlogController extends BaseController
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
-			$text_test = ControlModel::checkContent($_POST['text']);
+			$text_test   = ControlModel::checkContent($_POST['text']);
+			$text_flood  = ControlModel::isFloodFilter() ? ControlModel::checkFlood($_POST['text']) : true;
+			$text_unique = ControlModel::isSamecommFilter() ? ControlModel::checkCommUnique($_POST['text']) : true;
 
 			$validator = new ValidatorHelper($_POST);
 			if (ControlModel::isCommentCaptcha())
@@ -817,10 +877,24 @@ class BlogController extends BaseController
 			$validator -> assertLength('text', 2048, 'Текст комментария слишком длинный');
 			$validator -> assertNotExists('email',   'Заполнено лишнее поле');
 
-			$validator -> assertTrue(
-				'text', $text_test,
-				'Запрещенное слово из вордфильтра'
-			);
+			$post = Blog_BlogPostsModel::GetPost($_POST['post_id']);
+
+			if ($post["hidden"] == 0) {
+				$validator -> assertTrue(
+					'text', $text_flood,
+					'Обнаружен флуд'
+				);
+
+				$validator -> assertTrue(
+					'text', $text_unique,
+					'Новость или комментарий с таким текстом уже существует'
+				);
+
+				$validator -> assertTrue(
+					'text', $text_test,
+					'Запрещенное слово из вордфильтра'
+				);
+			}
 
 			$validator -> assertTrue(
 				'timeout', ControlModel::getPostCommentInterval() == 0,
@@ -836,7 +910,7 @@ class BlogController extends BaseController
 				$session -> persistenceSet('captcha_mode_length', @$settings['captcha_length']);
 
 				$template -> headerSeeOther(
-					'http://'. TemplateHelper::getSiteUrl() .'/news/res/'. $_GET['post_id'] .'/#'. $id
+					'/news/res/'. $_GET['post_id'] .'/#'. $id
 				);
 				return false;
 			}
@@ -844,13 +918,13 @@ class BlogController extends BaseController
 			$session -> instantSet('comment_errors', $validator -> getValidationResults());
 			$session -> instantSet('comment_form', $_POST);
 			$template -> headerSeeOther(
-				'http://'. TemplateHelper::getSiteUrl() .'/news/res/'. $_GET['post_id'] .'/#comment_form'
+				'/news/res/'. $_GET['post_id'] .'/#comment_form'
 			);
 			return false;
 		}
 
 		$template -> headerSeeOther(
-			'http://'. TemplateHelper::getSiteUrl() .'/news/'
+			'/news/'
 		);
 		return false;
 	}
@@ -861,24 +935,49 @@ class BlogController extends BaseController
 	public function addCommentAjaxAction(Application $application)
 	{
 		$session = Session::getInstance();
+		$settings = ControlModel::GetSettings();
 
 		if ($session -> isJustCreated())
 			return false;
 
 		$validator = new ValidatorHelper($_POST);
+		if (ControlModel::isCommentCaptcha())
+		{
+			$validator -> assertExists('captcha_key', 'Введите капчу');
+			if ($_POST['captcha_key'])
+				$validator -> assertEqual(
+					'captcha', $session -> instantGet('captcha_'. $_POST['captcha_key'], false),
+					'Капча введена неверно'
+				);
+//			return array('captcha' => true);
+		}
 		$validator -> assertExists('text',       'Не введен текст комментария');
 		$validator -> assertExists('post_id',    'Не указан идентификатор поста');
 		$validator -> assertLength('text', 2048, 'Текст комментария слишком длинный');
 		$validator -> assertNotExists('email',   'Заполнено лишнее поле');
 
-		$text_test = ControlModel::checkContent($_POST['text']);
-		if (ControlModel::isCommentCaptcha())
-			return array('captcha' => true);
+		$text_test   = ControlModel::checkContent($_POST['text']);
+		$text_flood  = ControlModel::isFloodFilter() ? ControlModel::checkFlood($_POST['text']) : true;
+		$text_unique = ControlModel::isSamecommFilter() ? ControlModel::checkCommUnique($_POST['text']) : true;
 
-		$validator -> assertTrue(
-			'text', $text_test,
-			'Запрещенное слово из вордфильтра'
-		);
+		$post = Blog_BlogPostsModel::GetPost($_POST['post_id']);
+
+		if ($post["hidden"] == 0) {
+			$validator -> assertTrue(
+				'text', $text_flood,
+				'Обнаружен флуд'
+			);
+
+			$validator -> assertTrue(
+				'text', $text_unique,
+				'Новость или комментарий с таким текстом уже существует'
+			);
+
+			$validator -> assertTrue(
+				'text', $text_test,
+				'Запрещенное слово из вордфильтра'
+			);
+		}
 
 		$validator -> assertTrue(
 			'timeout', ControlModel::getPostCommentInterval() == 0,
@@ -888,6 +987,9 @@ class BlogController extends BaseController
 		if ($validator -> isValid()) {
 			$id = Blog_BlogCommentsModel::CreateComment($_POST, true);
 			$session -> activeSet('last_visit_post_'. $_POST['post_id'], time());
+
+			$session -> persistenceSet('captcha_mode', false);
+			$session -> persistenceSet('captcha_mode_length', @$settings['captcha_length']);
 		}
 
 		return array(
@@ -907,7 +1009,7 @@ class BlogController extends BaseController
 		{
 			$rss = new rss('utf-8');
 
-			$rss->channel('Первый канал - Одобренные', 'http://1chna.ru/', 'Новости имиджборд и не только.');
+			$rss->channel('Первый канал - Одобренные', 'http://'. TemplateHelper::getSiteUrl() .'/', 'Новости имиджборд и не только.');
 			$rss->language('ru-ru');
 			$rss->copyright('Все права пренадлежат вам © 2010');
 			$rss->managingEditor('1kun.ebet.sobak@gmail.com');
@@ -951,7 +1053,7 @@ class BlogController extends BaseController
 		{
 			$rss = new rss('utf-8');
 
-			$rss->channel('Первый канал - Все', 'http://1chna.ru/', 'Новости имиджборд и не только.');
+			$rss->channel('Первый канал - Все', 'http://'. TemplateHelper::getSiteUrl() .'/', 'Новости имиджборд и не только.');
 			$rss->language('ru-ru');
 			$rss->copyright('Все права пренадлежат вам © 2010');
 			$rss->managingEditor('1kun.ebet.sobak@gmail.com');
@@ -977,6 +1079,51 @@ class BlogController extends BaseController
 
 		EventModel::getInstance()
 			-> Broadcast('view_rss_all_post');
+
+		$template -> headerOk();
+		$template -> headerContentType('application/rss+xml', 'UTF-8');
+		echo $result;
+
+		return false;
+	}
+
+	/**
+	 * Действие просмотр rss ленты скрытых постов:
+	 */
+	public function rssHiddenAction(Application $application, Template $template)
+	{
+		$posts = Blog_BlogPostsModel::GetHiddenPosts(0, 20, false);
+
+		if ($posts)
+		{
+			$rss = new rss('utf-8');
+
+			$rss->channel('Первый канал - Скрытые', 'http://'. TemplateHelper::getSiteUrl() .'/', 'Новости имиджборд и не только.');
+			$rss->language('ru-ru');
+			$rss->copyright('Все права пренадлежат вам © 2010');
+			$rss->managingEditor('1kun.ebet.sobak@gmail.com');
+			$rss->category('Все');
+
+			$rss->startRSS();
+			foreach($posts as $key => $post) {
+				$title = $post['category'] ?
+					TemplateHelper::BlogCategory($post['category'], 'title') .' — '. $post['title'] :
+					$post['title'];
+
+			    $rss->itemTitle($title);
+			    $rss->itemLink('http://'. TemplateHelper::getSiteUrl() .'/news/res/'. $post['id'] .'/');
+			    $rss->itemDescription(($post['link'] ? '<a href="'.$post['link'].'">'.$post['link'].'</a><br />'.$post['text'].$post['special_comment'] : $post['text'].$post['special_comment']));
+			    $rss->itemAuthor('anonymous');
+			    $rss->itemGuid('http://'. TemplateHelper::getSiteUrl() .'/news/res/'. $post['id'] .'/', true);
+			    $rss->itemPubDate(date('D, d M Y H:i:s O', $post['created_at']));
+			    $rss->addItem();
+			}
+
+			$result = $rss->RSSdone();
+		}
+
+		EventModel::getInstance()
+			-> Broadcast('view_rss_hidden_post');
 
 		$template -> headerOk();
 		$template -> headerContentType('application/rss+xml', 'UTF-8');

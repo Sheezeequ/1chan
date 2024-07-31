@@ -10,14 +10,14 @@ class LiveController extends BaseController
 	public function indexAction(Application $application, Template $template)
 	{
 		$session = Session::getInstance();
-		$filter              = $session -> persistenceGet('live_filter', true);
+		/* $filter = $session -> persistenceGet('live_filter', true); */
 		$this['form_errors'] = $session -> instantGet('live_errors', array());
 		$this['live_form']   = $session -> instantGet('live_form', array());
 
 		$template -> setParameter('title', '«Онлайн»');
 
-		$this['links']  = Blog_BlogOnlineModel::GetLinks($filter);
-		$this['filter'] = $filter;
+//		$this['links']  = Blog_BlogOnlineModel::GetLinks($filter);
+//		$this['filter'] = $filter;
 
 		$session -> persistenceSet('live_last_visit', time());
 		return true;
@@ -29,7 +29,7 @@ class LiveController extends BaseController
 	public function indexAjaxAction(Application $application)
 	{
 		$session = Session::getInstance();
-		$filter = $session -> persistenceGet('live_filter', true);
+		/* $filter = $session -> persistenceGet('live_filter', true); */
 		$session -> persistenceSet('live_last_visit', time());
 		$links = Blog_BlogOnlineModel::GetLinks($filter);
 		
@@ -74,12 +74,12 @@ class LiveController extends BaseController
 	{
 		$session = Session::getInstance();
 
-		if (parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST) != TemplateHelper::getSiteUrl())
+		if (!isset($_SERVER['HTTP_REFERER']) || (parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST) != TemplateHelper::getSiteUrl()))
 			return false;
 
 		if (ControlModel::isLiveCaptcha())
 		{
-			$catpcha = false;
+			$captcha = false;
 			$this['live_form'] = $_POST;
 
 			if (@$_POST['captcha'])
@@ -116,7 +116,7 @@ class LiveController extends BaseController
 				$validator -> assertTrue(
 					'link', Blog_BlogOnlineModel::CheckCategory($_POST['link']) !== false,
 					'Данная ссылка не может участвовать в ленте'
-				);
+				); 
 
 			if ($validator -> fieldValid('link'))
 				$validator -> assertTrue(
@@ -141,7 +141,7 @@ class LiveController extends BaseController
 			{
 				Blog_BlogOnlineModel::CreateLink($_POST);
 				$template -> headerSeeOther(
-					'http://'. TemplateHelper::getSiteUrl() .'/live/'
+					'/live/'
 				);
 				return false;
 			}
@@ -150,7 +150,7 @@ class LiveController extends BaseController
 			$session -> instantSet('live_form', $_POST);
 
 			$template -> headerSeeOther(
-				'http://'. TemplateHelper::getSiteUrl() .'/live/'
+				'/live/'
 			);
 			return false;
 		}
@@ -262,6 +262,7 @@ class LiveController extends BaseController
 	/**
 	 * Установка фильтра:
 	 */
+/*
 	public function setFilterAction(Application $application, Template $template)
 	{
 		$session = Session::getInstance();
@@ -269,14 +270,15 @@ class LiveController extends BaseController
 			$session -> persistenceSet('live_filter', array_keys($_POST['boards']));
 
 		$template -> headerSeeOther(
-			'http://'. TemplateHelper::getSiteUrl() .'/live/'
+			'/live/'
 		);
 		return false;
 	}
-
+*/
 	/**
 	 * Установка фильтра (ajax):
 	 */
+/*
 	public function setFilterAjaxAction(Application $application)
 	{
 		$session = Session::getInstance();
@@ -285,7 +287,7 @@ class LiveController extends BaseController
 
 		return $session -> persistenceGet('live_filter', true);
 	}
-
+*/
 	/**
 	 * Переход по ссылке:
 	 */

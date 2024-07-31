@@ -1,37 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta name="description" content="Первый канал интернетов" />
-		<meta name="keywords" content="крокодил, залупа, сыр" />
+		<meta name="description" content="Первый канал интернетов+" />
+		<meta name="keywords" content="Колчан, колчок, плюсок, плюсач" />
+		<meta name="viewport" content="width=device-width">
+		<title><?php echo $this -> getParameter('title'); ?> | <?php echo TemplateHelper::getSiteUrl(); ?></title>
 
-		<title><?php echo $this -> getParameter('title'); ?> | 1chna.ru</title>
+		<link rel="icon"       type="image/png" href="/ico/favicon.png?1" />
+		<link rel="stylesheet" type="text/css"     href="/css/production.css?27" media="all" />
+		<link rel="stylesheet" type="text/css"     href="/css/jquery_style/jquery-ui.css" media="all" />
 
-		<link rel="icon"       type="image/x-icon" href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/favicon.ico" />
-		<link rel="stylesheet" type="text/css"     href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/css/production.css?14" media="all" />
-		<link rel="stylesheet" type="text/css"     href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/css/jquery_style/jquery-ui.css" media="all" />
-
-		<script type="text/javascript" src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/js/jquery.js"></script>
-		<script type="text/javascript" src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/js/realplexor.js"></script>
-		<script type="text/javascript" src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/js/production.js?58"></script>
-<script type="text/javascript" src="/js/youtube.js"></script>
+		<script type="text/javascript" src="/js/jquery.js"></script>
+		<script type="text/javascript" src="/js/realplexor.js"></script>
+		<script type="text/javascript" src="/js/production.js?59"></script>
+		<script type="text/javascript" src="/js/youtube.js"></script>
 	</head>
 
 	<body id="<?php echo(Session::getInstance() -> getKey()); ?>">
 	<div class="b-notifiers js-notifiers"></div>
-
 	<div class="b-mod-toolbar g-hidden">
-	    <a href="#" id="mod_category" title="Категория"><img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/settings2.png" width="16" height="16" alt="" /></a>
-		<a href="#" id="mod_pinned"   title="Прикреплена"><img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/pinned.png" width="16" height="16" alt="" /></a>
-		<a href="#" id="mod_rated"    title="Одобрена"><img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/tick.png" width="16" height="16" alt="" /></a>
-		<a href="#" id="mod_rateable" title="Оцениваема"><img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/rate_on.png" width="16" height="16" alt="" /></a>
-		<a href="#" id="mod_closed"   title="Закрыта"><img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/block.png" width="16" height="16" alt="" /></a>
-		<a href="#" id="mod_remove"   title="Удалить"><img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/remove.gif" width="16" height="16" alt="" /></a>
+	    <a href="#" id="mod_category" title="Категория"><img src="/ico/settings2.png" width="16" height="16" alt="" /></a>
+		<a href="#" id="mod_pinned"   title="Прикреплена"><img src="/ico/pinned.png" width="16" height="16" alt="" /></a>
+		<a href="#" id="mod_rated"    title="Удобрена"><img src="/ico/poo-icon.png" width="16" height="16" alt="" /></a>
+		<a href="#" id="mod_rateable" title="Оцениваема"><img src="/ico/rate_on.png" width="16" height="16" alt="" /></a>
+		<a href="#" id="mod_closed"   title="Закрыта"><img src="/ico/block.png" width="16" height="16" alt="" /></a>
+		<a href="#" id="mod_remove"   title="Удалить"><img src="/ico/remove.gif" width="16" height="16" alt="" /></a>
 	</div>
 	<?php if ($message = ControlModel::isGlobalMessage()): ?>
 		<div class="b-global-message-panel">
 			<div class="l-wrap">
-				<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/warning.png" width="16" height="16" alt="" /> <?php echo($message); ?>
+				<img src="/ico/warning.png" width="16" height="16" alt="" /> <?php echo($message); ?>
 			</div>
 		</div>
 	<?php endif; ?>
@@ -51,8 +50,6 @@
 				padding: 5px;
 				text-align: center;
 			"><div class="js-poo-target" style="text-align: center; padding-top: 3px; padding-right: 0px; padding-bottom: 3px; padding-left: 0px;"><img src="/img/poo.png" width="64" height="65"></div><a href="javascript://" class="g-dynamic js-poo-toggle">Включить каку</a></div> */ ?>
-			<div id="ajax_loader" class="b-ajax-loader">Загрузка...</div>
-			<div id="ajax_loader_error" class="b-ajax-loader-error">Произошла ошибка!</div>
 
 			<div class="b-top-panel">
 				<ul>
@@ -63,25 +60,16 @@
 					<li>
 						<a href="/chat/">Анонимные чаты</a>
 					</li>
-					<li>|</li>
-					<li>
-						<a href="/press/" class="g-disabled">Цифровые издания</a>
-					</li>
-					<li>|</li>
-					<li>
-						<a href="/radio/" class="g-disabled">Радио и подкасты</a>
-					</li>
-
 					<li class="b-top-panel_m-right">
-						<a href="http://1chna.ru/chat/support/">Обратная связь</a>
+<!--						<a href="http://kolchpl6sf4t7yjf57an3gxyprqqtjm2gtvatzkcsx27uu3psssnmyad.onion">Tor-зеркало</a>-->
 					</li>
 				</ul>
 			</div>
 
 			<div class="b-header-block m-mascot-<?php echo($this -> getParameter('board_id', 'news')); ?>">
 				<div class="b-header-block_b-logotype">
-					<a href="http://1chna.ru/">
-						<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/img/logo.png" width="250" height="80" alt="1chna.ru" />
+					<a href="/news/all/">
+						<img src="/img/logo.png" width="250" height="80" alt="1chan.plus" />
 					</a>
 				</div>
 				<div class="b-header-block_b-stats" id="stats_block">
@@ -105,7 +93,7 @@
 			            <?php if (!empty($links)): ?>
 				            <?php foreach($links as $link): ?>
 				            <div class="b-live-entry">
-					            <a target="_blank" href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/live/redirect/<?php echo($link['id']) ?>?to=<?php echo($link['link']); ?>" class="b-live-entry_b-description"><?php echo($link['description']); ?></a> &larr; <a href="<?php echo($link['category']['url']); ?>" class="b-live-entry_b-board"><?php echo($link['category']['title']); ?></a>
+					            <a target="_blank" href="/live/redirect/<?php echo($link['id']) ?>?to=<?php echo($link['link']); ?>" class="b-live-entry_b-description"><?php echo($link['description']); ?></a> &larr; <a href="#" class="b-live-entry_b-board"><?php echo($link['category']['title']); ?></a>
 				            </div>
 				            <?php endforeach; ?>
 
@@ -115,15 +103,15 @@
 			            </div>
 			            <textarea id="template_link_panel" style="display:none">
 					        <div class="b-live-entry">
-						        <a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/live/redirect/<%=id%>?to=<%=link%>" class="b-live-entry_b-description"><%=description%></a> &larr; <a href="<%=category['url']%>" class="b-live-entry_b-board"><%=category['title']%></a>
+						        <a href="/live/redirect/<%=id%>?to=<%=link%>" class="b-live-entry_b-description"><%=description%></a> &larr; <a href="#" class="b-live-entry_b-board"><%=category['title']%></a>
 					        </div>
 				        </textarea>
 				    </div>
 				    <div class="b-links-panel_b-footer">
-				        <a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/live/">К подробному списку &rarr;</a>
+				        <a href="/live/">К подробному списку &rarr;</a>
 				    </div>
 				    <div class="b-links-panel_b-hide">
-				    	<a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/live/linksPanel/?status=off" class="b-links-panel_b-title_b-close g-dynamic js-close-right-panel g-hidden">Скрыть панель</a>
+				    	<a href="/live/linksPanel/?status=off" class="b-links-panel_b-title_b-close g-dynamic js-close-right-panel g-hidden">Скрыть панель</a>
 					</div>
 				</div>
 			</div>
@@ -136,9 +124,9 @@
 			        </div>
 			        <div class="b-menu-panel_b-links">
 			            <ul>
-			            	<li<?php if($this -> getParameter('board_id') == 'news'): ?> class="m-active"<?php endif; ?>><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/news/">Одобренные</a> | <a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/news/all/">Все</a></li>
+			            	<li<?php if($this -> getParameter('board_id') == 'news'): ?> class="m-active"<?php endif; ?>><a href="/news/">Удобренные</a> | <a href="/news/all/">Все</a></li>
 			            	<li class="b-menu-panel_b-footer">
-				            <a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/share/">сообщить новость</a>
+						<a class="hidden" href="/news/hidden/">Скрытые</a>
 				        </li>
 				    </ul>
 				    </div>
@@ -150,22 +138,13 @@
 			        </div>
 			          <div class="b-menu-panel_b-links">
 			            <ul>
-			            	<li<?php if($this -> getParameter('board_id') == 'd'): ?> class="m-active"<?php endif; ?>><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/d/">/d/ - Дискуссии об имиджбордах</a></li>
-			            	<li<?php if($this -> getParameter('board_id') == 'b'): ?> class="m-active"<?php endif; ?>><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/b/">/b/ - Бред</a></li>
-			            	<li<?php if($this -> getParameter('board_id') == 'to'): ?> class="m-active"<?php endif; ?>><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/to/">/to/ - Тохо</a></li>
-			            	<li<?php if($this -> getParameter('board_id') == 'a'): ?> class="m-active"<?php endif; ?>><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/a/">/a/ - Аниме</a></li>
-			            	<li<?php if($this -> getParameter('board_id') == 's'): ?> class="m-active"<?php endif; ?>><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/s/">/s/ - Софт</a></li>
-			            	<li<?php if($this -> getParameter('board_id') == 'vg'): ?> class="m-active"<?php endif; ?>><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/vg/">/vg/ - Видеоигры</a></li>
-			            	<li<?php if($this -> getParameter('board_id') == 'pr'): ?> class="m-active"<?php endif; ?>><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/pr/">/pr/ - Программинг</a></li>
-			            	<li<?php if($this -> getParameter('board_id') == 'mu'): ?> class="m-active"<?php endif; ?>><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/mu/">/mu/ - Музыка</a></li>
-			            	<li<?php if($this -> getParameter('board_id') == 'tv'): ?> class="m-active"<?php endif; ?>><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/tv/">/tv/ - ТВ и Кино</a></li>
-			            	<li<?php if($this -> getParameter('board_id') == 'int'): ?> class="m-active"<?php endif; ?>><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/int/">/int/ - International</a></li>
-			            	<li<?php if($this -> getParameter('board_id') == 'fav'): ?> class="m-active"<?php endif; ?>><img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/favorites-false.png" width="16" height="16" alt="" /> <a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/fav/">Избранные треды</a></li>
+			            	<li<?php if($this -> getParameter('board_id') == 'd'): ?> class="m-active"<?php endif; ?>><a href="/d/">/d/ - 1chan Discussion</a></li>
+			            	<li<?php if($this -> getParameter('board_id') == 'b'): ?> class="m-active"<?php endif; ?>><a href="/b/">/b/ - Бред</a></li>
+			            	<li<?php if($this -> getParameter('board_id') == 'fav'): ?> class="m-active"<?php endif; ?>><img src="/ico/favorites-false.png" width="16" height="16" alt="" /> <a href="/fav/">Избранные треды</a></li>
 				        <li class="b-menu-panel_b-footer">
-				            <a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/service/last_board_posts/">&larr; последние посты</a>
+				            <a href="/service/last_board_posts/">&larr; последние посты</a>
 				        </li>
 				    </ul>
-                                    <div class="b-menu-panel_b-conference" style="padding-top: 10px; font-size: 10px; color: #bbb;">Jabber-Конференции:<br> <u>news@conference.1chna.ru</u><br /><u>press@conference.1chna.ru</u></div>
 				    </div>
 				</div>
 			</div>
@@ -176,12 +155,10 @@
 			</div>
 			<div class="l-footer-wrap m-mascot-<?php echo($this -> getParameter('board_id', 'news')); ?>">
 				<div class="b-underlinks">
-					<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/rss.png" width="16" height="16" alt="" />
-					<a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/news/rss.xml">Одобренные</a> |
-					<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/rss2.png" width="16" height="16" alt="" />
-					<a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/news/all/rss.xml">Все</a> |
-					<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/jabber.png" width="16" height="16" alt="" />
-					<a href="xmpp:bot@1chna.ru?roster;name=1chna.ru;">Jabber-бот</a>
+					<img src="/ico/rss.png" width="16" height="16" alt="" />
+					<a href="/news/rss.xml">Удобренные</a> |
+					<img src="/ico/rss2.png" width="16" height="16" alt="" />
+					<a href="/news/all/rss.xml">Все</a>
 				</div>
 				<?php $_footer_links = Blog_BlogLinksModel::GetLinks(); ?>
 				<div class="b-footer-imgboards">
@@ -192,7 +169,7 @@
 						<li>
 						<?php if(@$link['offline']): ?>
 
-							<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/offline.png" width="16" height="16" alt="Сайт недоступен" />
+							<img src="/ico/offline.png" width="16" height="16" alt="Сайт недоступен" />
 							<a class="g-strike" href="<?php echo($link['href']); ?>"><?php echo($link['title']); ?></a>
 						<?php else: ?>
 
@@ -214,7 +191,7 @@
 						<li>
 						<?php if(@$link['offline']): ?>
 
-							<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/offline.png" width="16" height="16" alt="Сайт недоступен" />
+							<img src="/ico/offline.png" width="16" height="16" alt="Сайт недоступен" />
 							<a class="g-strike" href="<?php echo($link['href']); ?>"><?php echo($link['title']); ?></a>
 						<?php else: ?>
 
@@ -228,7 +205,8 @@
 					</ul>
 				</div>
 				<div class="b-footer-copyrights">
-					<span>При копировании материалов ни в коем случае не давать ссылку на <a href="http://1chna.ru/">1chna.ru</a></span>
+					<span>При копировании материалов ни в коем случае не давать ссылку на <a href="/"><?php echo TemplateHelper::getSiteUrl(); ?></a></span><br><br>
+					<a href="https://validator.w3.org/check?uri=referer"><img src="/img/valid-xhtml10-blue.png" alt="Valid XHTML 1.0 Transitional" style="border:none;"></a>
 				</div>
 			</div>
 		</div>

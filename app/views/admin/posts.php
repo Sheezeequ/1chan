@@ -13,7 +13,7 @@
                     	<?php foreach($posts as $post): ?>
 							<tr<?php if(++$i % 2): ?> class="odd"<?php endif; ?>>
                                 <td>(<?php echo !is_null($post['category']) ? $post['category'] : '-'; ?>:<?php echo $post['id']; ?>) <?php echo $post['title']; ?></td>
-                                <td class="action"><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/news/res/<?php echo $post['id']; ?>/" class="view">View</a><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/admin/postEdit?id=<?php echo $post['id']; ?>" class="edit">Edit</a><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/admin/postDelete?id=<?php echo $post['id']; ?>" class="delete">Delete</a></td>
+                                <td class="action"><a href="/news/res/<?php echo $post['id']; ?>/" class="view">View</a><a href="/admin/postEdit?id=<?php echo $post['id']; ?>" class="edit">Edit</a><a href="/admin/postDelete?id=<?php echo $post['id']; ?>" class="delete">Delete</a></td>
                             </tr>
                         <?php endforeach; ?>
                         <?php endif; ?>
@@ -23,7 +23,7 @@
 							<fieldset>
 							<?php foreach(range(0, $this -> getParameter('total_pages')) as $p): ?>
 								<?php if ($this -> getParameter('current_page') == $p): ?><b><?php echo($p); ?></b>
-								<?php else: ?><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/admin/posts?page=<?php echo($p); ?>&filter=<?php echo $this -> getParameter('filter'); ?>"><?php echo($p); ?></a><?php endif; ?>
+								<?php else: ?><a href="/admin/posts?page=<?php echo($p); ?>&filter=<?php echo $this -> getParameter('filter'); ?>"><?php echo($p); ?></a><?php endif; ?>
 
 							<?php endforeach; ?>
 							</fieldset>

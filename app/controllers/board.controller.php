@@ -2,6 +2,7 @@
 /**
  * Контроллер разделов на одинчане:
  */
+
 class BoardController extends BaseController
 {
 	/**
@@ -59,7 +60,7 @@ class BoardController extends BaseController
 				$id = $board -> createThread($_POST);
 
 				$template -> headerSeeOther(
-					'http://'. TemplateHelper::getSiteUrl() .'/'. $board -> getId() .'/res/'. $id .'/'
+					'/'. $board -> getId() .'/res/'. $id .'/'
 				);
 				return false;
 			}
@@ -70,7 +71,7 @@ class BoardController extends BaseController
 		}
 
 		$template -> headerSeeOther(
-			'http://'. TemplateHelper::getSiteUrl() .'/'. $board -> getId() .'/'
+			'/'. $board -> getId() .'/'
 		);
 		return false;
 	}
@@ -216,7 +217,7 @@ class BoardController extends BaseController
 				$session -> persistenceSet('captcha_mode_length', @$settings['captcha_length']);
 
 				$template -> headerSeeOther(
-					'http://'. TemplateHelper::getSiteUrl() .'/'. $board -> getId() .'/res/'. $_POST['parent_id'] .'/#'. $id
+					'/'. $board -> getId() .'/res/'. $_POST['parent_id'] .'/#'. $id
 				);
 				return false;
 			}
@@ -226,7 +227,7 @@ class BoardController extends BaseController
 		}
 
 		$template -> headerSeeOther(
-			'http://'. TemplateHelper::getSiteUrl() .'/'. $board -> getId() .'/res/'. $_POST['parent_id'] .'/'
+			'/'. $board -> getId() .'/res/'. $_POST['parent_id'] .'/'
 		);
 		return false;
 	}
@@ -321,19 +322,19 @@ class BoardController extends BaseController
 			if ($post['parent_id'] == null)
 			{
 				$template -> headerSeeOther(
-					'http://'. TemplateHelper::getSiteUrl() .'/'. $board -> getId() .'/res/'. $post['post_id'] .'/'
+					'/'. $board -> getId() .'/res/'. $post['post_id'] .'/'
 				);
 				return false;
 			}
 
 			$template -> headerSeeOther(
-				'http://'. TemplateHelper::getSiteUrl() .'/'. $board -> getId() .'/res/'. $post['parent_id'] .'/#'. $post['post_id']
+				'/'. $board -> getId() .'/res/'. $post['parent_id'] .'/#'. $post['post_id']
 			);
 			return false;
 		}
 
 		$template -> headerSeeOther(
-			'http://'. TemplateHelper::getSiteUrl() .'/'. $board -> getId() .'/'
+			'/'. $board -> getId() .'/'
 		);
 		return false;
 	}
@@ -355,7 +356,7 @@ class BoardController extends BaseController
 				{
 					if ($post = $board -> getPost($id))
 					{
-						$post['created_at']  = TemplateHelper::date($_GET['board'] != 'int' ? 'd M Y @ H:i' : 'Y-m-d @ H:i', $post['created_at']);
+						$post['created_at']  = TemplateHelper::date($_GET['board'] != 'int' ? 'd M Y @ H:i:s' : 'Y-m-d @ H:i:s', $post['created_at']);
 						$post['board_title'] = $settings['title'];						
 						$post['author']      = array($post['author'] ? $post['author'] : 'anonymous', HomeBoardHelper::getBoard($post['author']));
 						unset($post['ip']);
@@ -370,7 +371,7 @@ class BoardController extends BaseController
 			{
 				if ($post = $board -> getPost($_GET['id']))
 				{
-					$post['created_at']  = TemplateHelper::date($_GET['board'] != 'int' ? 'd M Y @ H:i' : 'Y-m-d @ H:i', $post['created_at']);
+					$post['created_at']  = TemplateHelper::date($_GET['board'] != 'int' ? 'd M Y @ H:i:s' : 'Y-m-d @ H:i:s', $post['created_at']);
 					$post['board_title'] = $settings['title'];
 					$post['author']      = array($post['author'] ? $post['author'] : 'anonymous', HomeBoardHelper::getBoard($post['author']));
 					unset($post['ip']);
@@ -387,7 +388,7 @@ class BoardController extends BaseController
 				$result = array();
 				foreach ($thread['posts'] as $id => $post)
 				{
-					$post['created_at']  = TemplateHelper::date($_GET['board'] != 'int' ? 'd M Y @ H:i' : 'Y-m-d @ H:i', $post['created_at']);
+					$post['created_at']  = TemplateHelper::date($_GET['board'] != 'int' ? 'd M Y @ H:i:s' : 'Y-m-d @ H:i:s', $post['created_at']);
 					$post['board_title'] = $settings['title'];
 					$post['author']     = array($post['author'] ? $post['author'] : 'anonymous', HomeBoardHelper::getBoard($post['author']));
 					unset($post['ip']);
@@ -463,7 +464,7 @@ class BoardController extends BaseController
 
 				    if ($board -> getId() != 'alone')
 					    ControlModel::logModEvent(
-						    date("d-m-Y H:i:s") .' '. $_SESSION['auth']['name'] .'<br /> удалил пост №'. $_GET['id'] .' в разделе '. $_GET['board']
+						    date("d-m-Y H:i") .' '. $_SESSION['auth']['name'] .'<br /> удалил пост №'. $_GET['id'] .' в разделе '. $_GET['board']
 					    );
                 }
 			}
@@ -541,7 +542,7 @@ class BoardController extends BaseController
 
 		$template -> setParameter('total_pages',  ceil($pages - 1));
 		$template -> setParameter('current_page', $page);
-		$template -> setParameter('link_pages', 'http://'. TemplateHelper::getSiteUrl() .'/'. $board -> getId() .'/%d/');
+		$template -> setParameter('link_pages', '/'. $board -> getId() .'/%d/');
 		
 		$session  -> instantSet('captcha_board', true);
 		$session  -> instantSet('captcha_board_comment', true);
@@ -562,9 +563,9 @@ class BoardController extends BaseController
 		$session  = Session::getInstance();
 		$settings = $board -> getSettings();
 
-		$template -> setParameter('title',             $settings['title']);
-		$template -> setParameter('description', $settings['description']);
-		$template -> setParameter('board_id',      $board -> getId());
+		$template -> setParameter('title', isset($settings) ? $settings['title'] : '');
+		$template -> setParameter('description', isset($settings) ? $settings['description'] : '');
+		$template -> setParameter('board_id', $board -> getId());
 
 		$thread = $board -> getThread($_GET['thread_id']);
 		
@@ -577,9 +578,9 @@ class BoardController extends BaseController
 
 		$stats = Board_StatisticsModel::getPostStats($thread['board_id'], $thread['id']);
 
-		$template -> setParameter('total_read',   $stats['online']);
-		$template -> setParameter('total_write',  $stats['writers']);
-		$template -> setParameter('total_unique', $stats['unique']);
+		$template -> setParameter('total_read',   isset($stats['online']) ? $stats['online'] : 0);
+		$template -> setParameter('total_write',  isset($stats['writers']) ? $stats['writers'] : 0);
+		$template -> setParameter('total_unique', isset($stats['unique']) ? $stats['unique'] : 0);
 
 		$session  -> instantSet('captcha_board_comment', true);
 
@@ -639,7 +640,7 @@ class BoardController extends BaseController
 
 		$template -> setParameter('total_pages',  ceil($pages - 1));
 		$template -> setParameter('current_page', $page);
-		$template -> setParameter('link_pages', 'http://'. TemplateHelper::getSiteUrl() .'/service/last_board_posts/%d/');
+		$template -> setParameter('link_pages', '/service/last_board_posts/%d/');
 
 		return true;
 	}

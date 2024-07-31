@@ -131,6 +131,20 @@ class Blog_BlogCommentsModel
 	}
 
 	/**
+	 * Проверка существования комментария с текстом:
+	 */
+	public static function CommentWithTextExists($text)
+	{
+		$dbh   = PDOQuery::getInstance();
+		$posts = $dbh -> select('1chan_comment', '*', 'text = '. $dbh -> q($text), null, 1);
+
+		if ($posts && !empty($posts[0]))
+			return true;
+
+		return false;
+	}
+
+	/**
 	 * Редактирование комментария:
 	 */
 	public static function EditComment($id, $params, $safeMode = true)
@@ -230,7 +244,7 @@ EventModel::getInstance()
 		/**
 		 * Очистка и фильтарция:
 		 */
-		$data['created_at'] = TemplateHelper::date('d M Y @ H:i', $data['created_at']);
+		$data['created_at'] = TemplateHelper::date('d M Y @ H:i:s', $data['created_at']);
 		$data['author']     = array($data['author'], HomeBoardHelper::getBoard($data['author']));
 		unset($data['ip']);
 		unset($data['text_original']);

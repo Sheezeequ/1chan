@@ -9,7 +9,7 @@ class TemplateHelper
 	 */
 	public static function getSiteUrl()
 	{
-		return '1chna.ru';
+		return $_SERVER["HTTP_HOST"];
 	}
 
 	/**
@@ -18,10 +18,10 @@ class TemplateHelper
 	public static function getIcon($site)
 	{
 		$site = str_replace('www.', '', parse_url($site, PHP_URL_HOST));
-		if (is_file(WEB_DIR .'/ico/favicons/'. $site .'.gif'))
-			return 'http://'. TemplateHelper::getSiteUrl() .'/ico/favicons/'. $site .'.gif';
+		if (is_file(WEB_DIR .'/ico/favicons/'. $site .'.png'))
+			return '/ico/favicons/'. $site .'.png';
 
-		return 'http://favicon.yandex.net/favicon/'. $site;
+		return 'https://proxy.duckduckgo.com/ip3/'. $site . '.ico';
 	}
 
 	/**
@@ -29,7 +29,7 @@ class TemplateHelper
 	 */
 	public static function date($pattern, $time = false) {
 	    // Не горжусь этим хаком:
-	    if ($pattern == 'Y-m-d @ H:i') {
+	    if ($pattern == 'Y-m-d @ H:i:s') {
 	        return date($pattern, $time ? $time : time());
 	    }
 	

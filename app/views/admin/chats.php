@@ -10,7 +10,7 @@
                     	<?php foreach($chats as $room): ?>
 							<tr<?php if(++$i % 2): ?> class="odd"<?php endif; ?>>
                                 <td><?php echo $room['title']; ?></td>
-                                <td class="action"><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/chat/<?php echo($room['room_id']); ?>/" class="view">View</a><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/admin/chatEdit?id=<?php echo($room['room_id']); ?>" class="edit">Edit</a><a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/admin/chatDelete?id=<?php echo($room['room_id']); ?>" class="delete">Delete</a></td>
+                                <td class="action"><a href="/chat/<?php echo($room['room_id']); ?>/" class="view">View</a><a href="/admin/chatEdit?id=<?php echo($room['room_id']); ?>" class="edit">Edit</a><a href="/admin/chatDelete?id=<?php echo($room['room_id']); ?>" class="delete">Delete</a></td>
                             </tr>
                         <?php endforeach; ?>
                         <?php endif; ?>

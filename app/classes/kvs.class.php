@@ -29,7 +29,7 @@ class KVS
 	{
 		if (is_null($this -> connection)) {
 			$this -> connection = new Redis();
-			$this -> connection -> connect('127.0.0.1', 6379);
+			$this -> connection -> connect(REDIS_HOST, REDIS_PORT);
 		}
 
 		return $this -> connection;
@@ -114,7 +114,7 @@ class KVS
 	 */
 	public function remove($class, $id = null, $name = null)
 	{
-		return $this -> connection -> delete(
+		return $this -> connection -> unlink(
 			$this -> getNS($class, $id, $name)
 		);
 	}
@@ -134,11 +134,11 @@ class KVS
 		if (!empty($keys[0]))
 			foreach ($keys as $key)
 			{
-				$this -> connection -> delete($key);
+				$this -> connection -> unlink($key);
 			}
 
 		if ($pattern == '*')
-			$this -> connection -> delete(
+			$this -> connection -> unlink(
 				$this -> getNS($class, $id, $pattern)
 			);
 
@@ -385,7 +385,7 @@ class KVS
 	 */
 	public function listRemove($class, $id = null, $name = null, $value = null)
 	{
-		return $this -> connection -> lremove(
+		return $this -> connection -> lrem(
 			$this -> getNS($class, $id, $name), $value, 1
 		);
 	}

@@ -1,7 +1,7 @@
 				<h2><a href="#">Первый канал</a> &raquo; <a href="#" class="active">Вордфильтр</a></h2>
 
                 <div id="main">
-                	<form action="http://<?php echo TemplateHelper::getSiteUrl(); ?>/admin/blogWordfilter" method="post" class="jsNice">
+                	<form action="/admin/blogWordfilter" method="post" class="jsNice">
                 		<h3>Запрещенные слова:</h3>
 						<fieldset>
 							<p><label>Регулярные выражения:</label><textarea name="wordfilter" rows="5"><?php echo($wordfilter); ?></textarea></p>

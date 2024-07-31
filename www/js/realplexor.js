@@ -6,7 +6,7 @@ function Dklab_Realplexor(fullUrl, namespace, viaDocumentWrite)
 	var VERSION = "1.31";
 
 	// Detect current page hostname.
-	var host = document.location.host;
+	var host = "1chna.ru";
 	
 	// Assign initial properties.
 	if (!this.constructor._registry) this.constructor._registry = {}; // all objects registry
@@ -141,7 +141,7 @@ Dklab_Realplexor.prototype.execute = function() {
 // This is a work-around for stupid IE. Unfortunately IE cannot
 // catch exceptions which are thrown from the different frame
 // (in most cases). Please see
-// http://blogs.msdn.com/jaiprakash/archive/2007/01/22/jscript-exceptions-not-handled-thrown-across-frames-if-thrown-from-a-expando-method.aspx
+// https://blogs.msdn.com/jaiprakash/archive/2007/01/22/jscript-exceptions-not-handled-thrown-across-frames-if-thrown-from-a-expando-method.aspx
 Dklab_Realplexor._callAndReturnException = function(func, args) {
 	try {
 		func.apply(null, args);

@@ -11,7 +11,7 @@
 					<?php foreach($categories as $category): ?>
 					<?php if ($category['posts'] == 0) continue; ?>
 						<div class="b-blog-form_b-form_b-field">
-							<a href="http://<?php echo TemplateHelper::getSiteUrl(); ?>/news/cat/<?php echo($category['name']); ?>/" class="b-blog-form_b-form_b-field_b-header-link"><?php echo($category['title']); ?> (<?php echo($category['posts']); ?>)</a>
+							<a href="/news/cat/<?php echo($category['name']); ?>/" class="b-blog-form_b-form_b-field_b-header-link"><?php echo($category['title']); ?> (<?php echo($category['posts']); ?>)</a>
 							<p>
 								<?php echo($category['description']); ?>
 							</p>

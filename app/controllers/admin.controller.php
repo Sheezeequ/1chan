@@ -11,8 +11,8 @@ class AdminController extends Controller
 	{
 		$session = Session::getInstance();
 
-		if (!$session -> isAdminSession())
-			die($application -> go('errors_error403'));
+//		if (!$session -> isAdminSession())
+//			die($application -> go('errors_error403'));
 	}
 
 	/**
@@ -22,7 +22,7 @@ class AdminController extends Controller
 	{
 		unset($_SESSION['auth']);
 		$template -> headerSeeOther(
-			'http://'. TemplateHelper::getSiteUrl() .'/b/'
+			'/news/'
 		);
 		return false;
 	}
@@ -77,7 +77,7 @@ class AdminController extends Controller
 		{
 			Blog_BlogPostsModel::CreatePost($_POST, false);
 			$template -> headerSeeOther(
-				'http://'. TemplateHelper::getSiteUrl() .'/admin/posts/'
+				'/admin/posts/'
 			);
 
 			exit;
@@ -99,7 +99,7 @@ class AdminController extends Controller
 		{
 			Blog_BlogPostsModel::EditPost($_POST['id'], $_POST, false);
 			$template -> headerSeeOther(
-				'http://'. TemplateHelper::getSiteUrl() .'/admin/postEdit?id='. $_POST['id']
+				'/admin/postEdit?id='. $_POST['id']
 			);
 
 			exit;
@@ -139,7 +139,7 @@ class AdminController extends Controller
 			else
 			{
 				$search = new SphinxClient();
-       			$search -> SetServer('localhost', 3312);
+       			$search -> SetServer(SPHINX_HOST, SPHINX_PORT);
         		$search -> SetSortMode(SPH_SORT_EXTENDED, '@relevance DESC, created_at DESC, @id DESC');
 				$search -> SetLimits(0, 60);
 				$search -> SetWeights ( array ('title' => 40, 'text' => 20, 'text_full' => 10 ) );
@@ -188,7 +188,7 @@ class AdminController extends Controller
 		{
 			Blog_BlogCommentsModel::EditComment($_POST['id'], $_POST, false);
 			$template -> headerSeeOther(
-				'http://'. TemplateHelper::getSiteUrl() .'/admin/postCommentEdit?id='. $_POST['id']
+				'/admin/postCommentEdit?id='. $_POST['id']
 			);
 
 			exit;
@@ -204,7 +204,7 @@ class AdminController extends Controller
 	{
 		Blog_BlogCommentsModel::RemoveComment($_GET['id']);
 		$template -> headerSeeOther(
-			'http://'. TemplateHelper::getSiteUrl() .'/admin/postComments'
+			'/admin/postComments'
 		);
 
 		exit;
@@ -239,7 +239,7 @@ class AdminController extends Controller
 		{
 			Blog_BlogCategoryModel::CreateCategory($_POST, false);
 			$template -> headerSeeOther(
-				'http://'. TemplateHelper::getSiteUrl() .'/admin/postCategory/'
+				'/admin/postCategory/'
 			);
 
 			exit;
@@ -262,7 +262,7 @@ class AdminController extends Controller
 		{
 			Blog_BlogCategoryModel::EditCategory($_POST['id'], $_POST);
 			$template -> headerSeeOther(
-				'http://'. TemplateHelper::getSiteUrl() .'/admin/postCategoryEdit?id='. $_POST['id']
+				'/admin/postCategoryEdit?id='. $_POST['id']
 			);
 
 			exit;
@@ -276,7 +276,7 @@ class AdminController extends Controller
 	{
 		Blog_BlogCategoryModel::Resort($_POST['pos']);
 		$template -> headerSeeOther(
-			'http://'. TemplateHelper::getSiteUrl() .'/admin/postCategory/'
+			'/admin/postCategory/'
 		);
 		exit;
 	}
@@ -288,7 +288,7 @@ class AdminController extends Controller
 	{
 		Blog_BlogCategoryModel::RemoveCategory($_GET['id']);
 		$template -> headerSeeOther(
-			'http://'. TemplateHelper::getSiteUrl() .'/admin/postCategory/'
+			'/admin/postCategory/'
 		);
 
 		exit;
@@ -507,7 +507,7 @@ class AdminController extends Controller
 	    {
 			Chat_ChatRoomsModel::CreateRoom($_POST);
 			$template -> headerSeeOther(
-				'http://'. TemplateHelper::getSiteUrl() .'/admin/chats/'
+				'/admin/chats/'
 			);
 
 			exit;
@@ -529,7 +529,7 @@ class AdminController extends Controller
 	        
 			Chat_ChatRoomsModel::EditRoom($_POST['id'], $_POST);
 			$template -> headerSeeOther(
-				'http://'. TemplateHelper::getSiteUrl() .'/admin/chatEdit?id='. $_POST['id']
+				'/admin/chatEdit?id='. $_POST['id']
 			);
 
 			exit;
@@ -578,7 +578,7 @@ class AdminController extends Controller
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			StaticModel::SetPage($_POST['page'], $_POST['title'], $_POST['content'], $_POST['published']);
 			$template -> headerSeeOther(
-				'http://'. TemplateHelper::getSiteUrl() .'/admin/staticPages/'
+				'/admin/staticPages/'
 			);
 
 			exit;
@@ -601,7 +601,7 @@ class AdminController extends Controller
 
 			StaticModel::SetPage($_POST['page'], $_POST['title'], $_POST['content'], $_POST['published']);
 			$template -> headerSeeOther(
-				'http://'. TemplateHelper::getSiteUrl() .'/admin/staticEdit?page='.$_POST['page']
+				'/admin/staticEdit?page='.$_POST['page']
 			);
 
 			exit;
@@ -659,7 +659,7 @@ class AdminController extends Controller
 	/**
 	 * Выбор лейаута:
 	 */
-	public function process(Template $template)
+	public function process($template)
 	{
 		return $template -> render($this -> viewParams, 'admin_layout');
 	}

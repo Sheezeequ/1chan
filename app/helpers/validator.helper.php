@@ -172,13 +172,19 @@ class ValidatorHelper
 			  |
 			    (?i: [a-z0-9] (?:[-a-z0-9]*[a-z0-9])? \\. )+
 			    (?-i: com\\b
-			        | edu\\b
-			        | biz\\b
-			        | gov\\b
-			        | in(?:t|fo)\\b # .int or .info
-			        | mil\\b
-			        | net\\b
-			        | org\\b
+				| edu\\b
+				| biz\\b
+				| gov\\b
+				| in(?:t|fo)\\b # .int or .info
+				| mil\\b
+				| net\\b
+				| org\\b
+				| ovh\\b
+				| xyz\\b
+				| space\\b
+				| club\\b
+				| onion\\b
+				| i2p\\b
 			        | [a-z][a-z]\\.[a-z][a-z]\\b # two-letter country code
 			    )
 			  )

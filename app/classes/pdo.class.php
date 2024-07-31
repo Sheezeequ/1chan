@@ -40,7 +40,7 @@ class PDOQuery
 		);
 
 		$this -> connection
-			-> exec('SET NAMES utf8');
+			-> exec('SET NAMES utf8mb4');
 	}
 
 	/**
@@ -51,6 +51,29 @@ class PDOQuery
 		return $this -> connection -> quote($string);
 	}
 
+	/**
+	 * Обработка булевых и прочих подобных POST-запросов:
+	 */
+	public static function toTinyint($string) {
+		if(!isset($string)) return 0;
+		switch($string) {
+			case 'off':
+				return 0;
+			case 'on':
+				return 1;
+			case false:
+				return 0;
+			case true:
+				return 1;
+			case '0':
+				return 0;
+			case '1':
+				return 1;
+			default:
+				return 0;
+		}
+	}
+	
 	/**
 	 * Запрос на вставку значений:
 	 */
