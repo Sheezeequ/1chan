@@ -1,4 +1,0 @@
-<?php
-$birthday_today_list = ' <a href=\"profile.php?mode=viewprofile&amp;u=11\" class=\"gensmall\"><span >ДЬЯВОЛ</span> (29)</a> ';
-$birthday_week_list = '';
-?>

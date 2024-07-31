@@ -1,4 +1,0 @@
-<?php
-$birthday_today_list = '';
-$birthday_week_list = '';
-?>
