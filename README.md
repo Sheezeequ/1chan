@@ -53,12 +53,6 @@ sudo apt-get install rdiff-backup
 sudo rdiff-backup --force -r now /var/www/1chna/www/sxd/redis/dump.rdb /var/lib/redis/dump.rdb  
 sudo service redis-server start  
 sudo apt-get install p7zip-full  
-cd /var/www/1chna/www/forum/  
-7z x '__UNZIP_ME!!(sex).zip' -aoa -p*********  
-cd /var/www/1chna/  
-mysql -u root -p b7_9629569_erosite < kulachki_final_dump_terminal.sql  
 cd ~  
 ./rest.sh  
 apt-get install php5.6-imagick imagemagick  
-cd /var/www/1chna/www/uploads/  
-./1chru_unp.sh  
