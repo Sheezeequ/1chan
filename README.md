@@ -5,7 +5,7 @@ sudo apt install software-properties-common
 sudo apt autoremove  
 add-apt-repository ppa:ondrej/php  
 sudo apt-get update  
-sudo apt-get install php5.6-fpm php5.6-cli php5.6-common php5.6-curl php5.6-mbstring php5.6-mysql php5.6-xml php5.6-gd php5.6-zip php5.6-bcmath php5.6-redis  
+sudo apt-get install php7.4-fpm php7.4-cli php7.4-common php7.4-curl php7.4-mbstring php7.4-mysql php7.4-xml php7.4-gd php7.4-zip php7.4-bcmath php7.4-redis  
 sudo apt-get install ca-certificates apt-transport-https  
 sudo apt-get install wget git zip unzip  
 sudo apt-get install nginx  
@@ -24,8 +24,8 @@ service dklab_realplexor reload
 cd /var/www/  
 git clone https://github.com/Sheezeequ/1chan  
 mysql -h localhost -u root -p  
-mysql -u root -p 1chan < /var/www/1chna/dump.sql  
-cd 1chna  
+mysql -u root -p 1chan < /var/www/1chan/dump.sql  
+cd 1chan  
 mv rest.sh ~/rest.sh  
 mv snippets.zip ~/snippets.zip  
 mv sites-available.zip ~/sites-available.zip  
@@ -50,9 +50,9 @@ ln -s /etc/nginx/sites-available/1chan.conf /etc/nginx/sites-enabled/1chan.conf
 sudo reboot  
 sudo service redis-server stop  
 sudo apt-get install rdiff-backup  
-sudo rdiff-backup --force -r now /var/www/1chna/www/sxd/redis/dump.rdb /var/lib/redis/dump.rdb  
+sudo rdiff-backup --force -r now /var/www/1chan/www/sxd/redis/dump.rdb /var/lib/redis/dump.rdb  
 sudo service redis-server start  
 sudo apt-get install p7zip-full  
 cd ~  
 ./rest.sh  
-apt-get install php5.6-imagick imagemagick  
+apt-get install php7.4-imagick imagemagick  
