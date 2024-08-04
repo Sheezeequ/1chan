@@ -22,7 +22,7 @@ bash ./Make.sh
 ln -s /opt/dklab_realplexor/dklab_realplexor.init /etc/init.d/dklab_realplexor  
 service dklab_realplexor reload  
 cd /var/www/  
-git clone https://github.com/Marjatta1ch/1chna  
+git clone https://github.com/Sheezeequ/1chan  
 mysql -h localhost -u root -p  
 mysql -u root -p 1chan < /var/www/1chna/dump.sql  
 cd 1chna  
