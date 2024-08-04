@@ -34,10 +34,10 @@ chmod 777 backup
 chmod 666 cfg.php  
 chmod 666 ses.php  
 cd ../  
-mv phpMyAdmin-4.8.1-all-languages.zip ~/phpMyAdmin-4.8.1-all-languages.zip  
+mv phpMyAdmin-5.2.1-all-languages.zip ~/phpMyAdmin-5.2.1-all-languages.zip  
 cd ~  
-unzip phpMyAdmin-4.8.1-all-languages.zip  
-mv phpMyAdmin-4.8.1-all-languages /usr/share/phpmyadmin  
+unzip phpMyAdmin-5.2.1-all-languages.zip  
+mv phpMyAdmin-5.2.1-all-languages /usr/share/phpmyadmin  
 unzip snippets.zip  
 cd snippets  
 mv phpmyadmin-location.conf /etc/nginx/snippets/phpmyadmin-location.conf  
